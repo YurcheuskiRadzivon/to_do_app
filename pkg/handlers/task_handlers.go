@@ -4,6 +4,14 @@ import (
 	"html/template"
 	"net/http"
 	"path/filepath"
+	"sync"
+
+	"github.com/YurcheuskiRadzivon/to_do_app/pkg/task"
+)
+
+var (
+	tasks task.Tasks
+	mu    sync.Mutex
 )
 
 func GetTasks(w http.ResponseWriter, req *http.Request) {
