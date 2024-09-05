@@ -135,11 +135,21 @@
 <main class="flex-shrink-0">
   <div class="container">
     <h1 class="mt-5">Api helper</h1>
-    <p class="lead">GET /tasks   -  shows all tasks </p>
-    <p class="lead">GET /task/id   -  shows shows the task by id </p>
-    <p class="lead">POST /task   -  creates a task </p>
-    <p class="lead">PUT /task/id   -  changes the task by id </p>
-    <p class="lead">DELETE /task/id   -  deletes a task by id </p>
+    <p class="lead">GET localhost:8080/tasks   -  shows all tasks </p>
+    <p class="lead">GET localhost:8080/tasks/id   -  shows shows the task by id </p>
+    <p class="lead">POST localhost:8080/tasks   -  creates a task </p>
+    <p class="lead">curl -X POST http://localhost:8080/task \
+      -H "Content-Type: application/json" \
+      -d '{
+            "id": 1,
+            "title": "Learn Go",
+            "notes": "Complete the Go tutorial",
+            "completed": false,
+            "priority": 1
+          }'
+      Example of request</p>
+    <p class="lead">PUT localhost:8080/tasks/id   -  changes the task by id(In the next version) </p>
+    <p class="lead">DELETE localhost:8080/tasks/id   -  deletes a task by id </p>
    </div>
 </main>
 
