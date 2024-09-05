@@ -9,9 +9,9 @@ func NewMuxRoute() *mux.Router {
 	r := mux.NewRouter()
 	r.HandleFunc("/", handlers.MainPage)
 	r.HandleFunc("/tasks", handlers.GetTasks).Methods("GET")
-	r.HandleFunc("/task/{id:[0-9]+}", handlers.GetTask).Methods("GET")
-	r.HandleFunc("/task", handlers.CreateTask).Methods("POST").Headers("Content-Type", "application/json")
-	r.HandleFunc("/task/{id:[0-9]+}/update", handlers.UpdateTask).Methods("PUT")
-	r.HandleFunc("/task/{id:[0-9]+}", handlers.DeleteTask).Methods("DELETE")
+	r.HandleFunc("/tasks/{id:[0-9]+}", handlers.GetTask).Methods("GET")
+	r.HandleFunc("/tasks", handlers.CreateTask).Methods("POST").Headers("Content-Type", "application/json")
+	r.HandleFunc("/tasks/{id:[0-9]+}", handlers.UpdateTask).Methods("PUT")
+	r.HandleFunc("/tasks/{id:[0-9]+}", handlers.DeleteTask).Methods("DELETE")
 	return r
 }

@@ -101,7 +101,80 @@ func (v Tasks) MarshalEasyJSON(w *jwriter.Writer) {
 func (v *Tasks) UnmarshalEasyJSON(l *jlexer.Lexer) {
 	easyjson79a0a577DecodeGithubComYurcheuskiRadzivonToDoAppPkgTask(l, v)
 }
-func easyjson79a0a577DecodeGithubComYurcheuskiRadzivonToDoAppPkgTask1(in *jlexer.Lexer, out *Task) {
+func easyjson79a0a577DecodeGithubComYurcheuskiRadzivonToDoAppPkgTask1(in *jlexer.Lexer, out *TaskInput) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "title":
+			out.Title = string(in.String())
+		case "notes":
+			out.Notes = string(in.String())
+		case "completed":
+			out.Completed = bool(in.Bool())
+		case "priority":
+			out.Priority = int(in.Int())
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson79a0a577EncodeGithubComYurcheuskiRadzivonToDoAppPkgTask1(out *jwriter.Writer, in TaskInput) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	{
+		const prefix string = ",\"title\":"
+		out.RawString(prefix[1:])
+		out.String(string(in.Title))
+	}
+	{
+		const prefix string = ",\"notes\":"
+		out.RawString(prefix)
+		out.String(string(in.Notes))
+	}
+	{
+		const prefix string = ",\"completed\":"
+		out.RawString(prefix)
+		out.Bool(bool(in.Completed))
+	}
+	{
+		const prefix string = ",\"priority\":"
+		out.RawString(prefix)
+		out.Int(int(in.Priority))
+	}
+	out.RawByte('}')
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v TaskInput) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson79a0a577EncodeGithubComYurcheuskiRadzivonToDoAppPkgTask1(w, v)
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *TaskInput) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson79a0a577DecodeGithubComYurcheuskiRadzivonToDoAppPkgTask1(l, v)
+}
+func easyjson79a0a577DecodeGithubComYurcheuskiRadzivonToDoAppPkgTask2(in *jlexer.Lexer, out *Task) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -140,7 +213,7 @@ func easyjson79a0a577DecodeGithubComYurcheuskiRadzivonToDoAppPkgTask1(in *jlexer
 		in.Consumed()
 	}
 }
-func easyjson79a0a577EncodeGithubComYurcheuskiRadzivonToDoAppPkgTask1(out *jwriter.Writer, in Task) {
+func easyjson79a0a577EncodeGithubComYurcheuskiRadzivonToDoAppPkgTask2(out *jwriter.Writer, in Task) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -174,10 +247,55 @@ func easyjson79a0a577EncodeGithubComYurcheuskiRadzivonToDoAppPkgTask1(out *jwrit
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v Task) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson79a0a577EncodeGithubComYurcheuskiRadzivonToDoAppPkgTask1(w, v)
+	easyjson79a0a577EncodeGithubComYurcheuskiRadzivonToDoAppPkgTask2(w, v)
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *Task) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson79a0a577DecodeGithubComYurcheuskiRadzivonToDoAppPkgTask1(l, v)
+	easyjson79a0a577DecodeGithubComYurcheuskiRadzivonToDoAppPkgTask2(l, v)
+}
+func easyjson79a0a577DecodeGithubComYurcheuskiRadzivonToDoAppPkgTask3(in *jlexer.Lexer, out *ID) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson79a0a577EncodeGithubComYurcheuskiRadzivonToDoAppPkgTask3(out *jwriter.Writer, in ID) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	out.RawByte('}')
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v ID) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson79a0a577EncodeGithubComYurcheuskiRadzivonToDoAppPkgTask3(w, v)
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *ID) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson79a0a577DecodeGithubComYurcheuskiRadzivonToDoAppPkgTask3(l, v)
 }

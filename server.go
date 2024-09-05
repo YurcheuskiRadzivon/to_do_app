@@ -7,15 +7,13 @@ import (
 	"os"
 	"os/signal"
 	"time"
-
-	"github.com/gorilla/mux"
 )
 
 type Server struct {
 	httpServer *http.Server
 }
 
-func (s *Server) Run(port string, r *mux.Router) error {
+func (s *Server) Run(port string, r http.Handler) error {
 	s.httpServer = &http.Server{
 		Addr:           ":" + port,
 		MaxHeaderBytes: 1 << 20,

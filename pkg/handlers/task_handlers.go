@@ -11,6 +11,7 @@ import (
 	"sync"
 
 	"github.com/YurcheuskiRadzivon/to_do_app/pkg/task"
+	"github.com/gorilla/mux"
 	"github.com/mailru/easyjson"
 )
 
@@ -50,9 +51,10 @@ func GetTask(w http.ResponseWriter, req *http.Request) {
 	         }'
 */
 func CreateTask(w http.ResponseWriter, req *http.Request) {
-	var task task.Task
+	var partTask task.TaskInput
+	var taskVal task.Task
 
-	if err := json.NewDecoder(req.Body).Decode(&task); err != nil {
+	if err := json.NewDecoder(req.Body).Decode(&partTask); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
@@ -66,7 +68,8 @@ func CreateTask(w http.ResponseWriter, req *http.Request) {
 		log.Println("Ошибка при декодировании JSON:", err)
 		return
 	}
-	tasks.List = append(tasks.List, task)
+	taskVal = task.CreateT(partTask)
+	tasks.List = append(tasks.List, taskVal)
 	updatedData, err := easyjson.Marshal(tasks)
 	if err != nil {
 		log.Println("Ошибка при кодировании JSON:", err)
@@ -81,9 +84,36 @@ func CreateTask(w http.ResponseWriter, req *http.Request) {
 	fmt.Println("Файл успешно обновлен")
 
 }
-func UpdateTask(w http.ResponseWriter, req *http.Request) {
-
-}
 func DeleteTask(w http.ResponseWriter, req *http.Request) {
+	vars := mux.Vars(req)
+	id := vars["id"]
+
+	tmplPath := filepath.Join("..", "pkg", "task", "tasks.json")
+	file, err := os.ReadFile(tmplPath)
+	if err != nil {
+		log.Println("Ошибка при чтении файла:", err)
+		return
+	}
+	if err := easyjson.Unmarshal(file, &tasks); err != nil {
+		log.Println("Ошибка при декодировании JSON:", err)
+		return
+	}
+	for i, val := range tasks.List {
+		if fmt.Sprintf("%v", val.ID) == id {
+			tasks.List = append(tasks.List[:i], tasks.List[i+1:]...)
+		}
+	}
+	updatedData, err := easyjson.Marshal(tasks)
+	if err != nil {
+		log.Println("Ошибка при кодировании JSON:", err)
+		return
+	}
+	err = os.WriteFile(tmplPath, updatedData, 0644)
+	if err != nil {
+		log.Println("Ошибка при записи файла:", err)
+		return
+	}
+
+	fmt.Println("Файл успешно обновлен")
 
 }
