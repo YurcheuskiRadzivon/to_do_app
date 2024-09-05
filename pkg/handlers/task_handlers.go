@@ -21,6 +21,26 @@ var (
 )
 
 func GetTasks(w http.ResponseWriter, req *http.Request) {
+	tmplPathHtml := filepath.Join("..", "templates", "gettask_page.html")
+	tmpl, err := template.ParseFiles(tmplPathHtml)
+	if err != nil {
+		http.Error(w, "Error parsing template: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+	tmplPathJson := filepath.Join("..", "pkg", "task", "tasks.json")
+	file, err := os.ReadFile(tmplPathJson)
+	if err != nil {
+		log.Println("Ошибка при чтении файла:", err)
+		return
+	}
+	if err := easyjson.Unmarshal(file, &tasks); err != nil {
+		log.Println("Ошибка при декодировании JSON:", err)
+		return
+	}
+	err = tmpl.Execute(w, tasks.List)
+	if err != nil {
+		http.Error(w, "Error executing template: "+err.Error(), http.StatusInternalServerError)
+	}
 
 }
 func MainPage(w http.ResponseWriter, r *http.Request) {
