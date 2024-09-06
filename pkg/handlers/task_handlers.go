@@ -20,15 +20,17 @@ var (
 	mu    sync.Mutex
 )
 
-func GetTasks(w http.ResponseWriter, req *http.Request) {
-	tmplPathHtml := filepath.Join("..", "templates", "gettask_page.html")
-	tmpl, err := template.ParseFiles(tmplPathHtml)
+func ParseFiles(w http.ResponseWriter, filename string) *template.Template {
+	tmpl, err := template.ParseFiles(filename)
 	if err != nil {
 		http.Error(w, "Error parsing template: "+err.Error(), http.StatusInternalServerError)
-		return
+		return nil
 	}
-	tmplPathJson := filepath.Join("..", "pkg", "task", "tasks.json")
-	file, err := os.ReadFile(tmplPathJson)
+	return tmpl
+}
+func OpenJson() {
+	tmplPath := filepath.Join("..", "pkg", "task", "tasks.json")
+	file, err := os.ReadFile(tmplPath)
 	if err != nil {
 		log.Println("Ошибка при чтении файла:", err)
 		return
@@ -37,7 +39,25 @@ func GetTasks(w http.ResponseWriter, req *http.Request) {
 		log.Println("Ошибка при декодировании JSON:", err)
 		return
 	}
-	err = tmpl.Execute(w, tasks.List)
+}
+func CloseJson() {
+	tmplPath := filepath.Join("..", "pkg", "task", "tasks.json")
+	updatedData, err := easyjson.Marshal(tasks)
+	if err != nil {
+		log.Println("Ошибка при кодировании JSON:", err)
+		return
+	}
+	err = os.WriteFile(tmplPath, updatedData, 0644)
+	if err != nil {
+		log.Println("Ошибка при записи файла:", err)
+		return
+	}
+}
+func GetTasks(w http.ResponseWriter, req *http.Request) {
+	tmplPathHtml := filepath.Join("..", "templates", "gettask_page.html")
+	tmpl := ParseFiles(w, tmplPathHtml)
+	OpenJson()
+	err := tmpl.Execute(w, tasks.List)
 	if err != nil {
 		http.Error(w, "Error executing template: "+err.Error(), http.StatusInternalServerError)
 	}
@@ -45,17 +65,44 @@ func GetTasks(w http.ResponseWriter, req *http.Request) {
 }
 func MainPage(w http.ResponseWriter, r *http.Request) {
 	tmplPath := filepath.Join("..", "templates", "main_page.html")
-	tmpl, err := template.ParseFiles(tmplPath)
-	if err != nil {
-		http.Error(w, "Error parsing template: "+err.Error(), http.StatusInternalServerError)
-		return
-	}
-	err = tmpl.Execute(w, nil)
+	tmpl := ParseFiles(w, tmplPath)
+	err := tmpl.Execute(w, nil)
 	if err != nil {
 		http.Error(w, "Error executing template: "+err.Error(), http.StatusInternalServerError)
 	}
 }
 func GetTask(w http.ResponseWriter, req *http.Request) {
+	var (
+		t task.Task
+		b bool = false
+	)
+
+	vars := mux.Vars(req)
+	id := vars["id"]
+	OpenJson()
+	for i, val := range tasks.List {
+		if fmt.Sprintf("%v", val.ID) == id {
+			t = tasks.List[i]
+			b = true
+
+		}
+	}
+	CloseJson()
+	if b == true {
+		tmplPathHtml := filepath.Join("..", "templates", "gettaskid_page.html")
+		tmpl := ParseFiles(w, tmplPathHtml)
+		err := tmpl.Execute(w, t)
+		if err != nil {
+			http.Error(w, "Error executing template: "+err.Error(), http.StatusInternalServerError)
+		}
+	} else {
+		tmplPathHtml := filepath.Join("..", "templates", "gettaskiderror_page.html")
+		tmpl := ParseFiles(w, tmplPathHtml)
+		err := tmpl.Execute(w, nil)
+		if err != nil {
+			http.Error(w, "Error executing template: "+err.Error(), http.StatusInternalServerError)
+		}
+	}
 
 }
 
@@ -78,61 +125,27 @@ func CreateTask(w http.ResponseWriter, req *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	tmplPath := filepath.Join("..", "pkg", "task", "tasks.json")
-	file, err := os.ReadFile(tmplPath)
-	if err != nil {
-		log.Println("Ошибка при чтении файла:", err)
-		return
-	}
-	if err := easyjson.Unmarshal(file, &tasks); err != nil {
-		log.Println("Ошибка при декодировании JSON:", err)
-		return
-	}
+	OpenJson()
 	taskVal = task.CreateT(partTask)
+	mu.Lock()
 	tasks.List = append(tasks.List, taskVal)
-	updatedData, err := easyjson.Marshal(tasks)
-	if err != nil {
-		log.Println("Ошибка при кодировании JSON:", err)
-		return
-	}
-	err = os.WriteFile(tmplPath, updatedData, 0644)
-	if err != nil {
-		log.Println("Ошибка при записи файла:", err)
-		return
-	}
-
+	mu.Unlock()
+	CloseJson()
 	fmt.Println("Файл успешно обновлен")
 
 }
 func DeleteTask(w http.ResponseWriter, req *http.Request) {
 	vars := mux.Vars(req)
 	id := vars["id"]
-
-	tmplPath := filepath.Join("..", "pkg", "task", "tasks.json")
-	file, err := os.ReadFile(tmplPath)
-	if err != nil {
-		log.Println("Ошибка при чтении файла:", err)
-		return
-	}
-	if err := easyjson.Unmarshal(file, &tasks); err != nil {
-		log.Println("Ошибка при декодировании JSON:", err)
-		return
-	}
+	OpenJson()
 	for i, val := range tasks.List {
 		if fmt.Sprintf("%v", val.ID) == id {
+			mu.Lock()
 			tasks.List = append(tasks.List[:i], tasks.List[i+1:]...)
+			mu.Unlock()
 		}
 	}
-	updatedData, err := easyjson.Marshal(tasks)
-	if err != nil {
-		log.Println("Ошибка при кодировании JSON:", err)
-		return
-	}
-	err = os.WriteFile(tmplPath, updatedData, 0644)
-	if err != nil {
-		log.Println("Ошибка при записи файла:", err)
-		return
-	}
+	CloseJson()
 
 	fmt.Println("Файл успешно обновлен")
 
