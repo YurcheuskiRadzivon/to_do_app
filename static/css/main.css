@@ -3,6 +3,10 @@
     color: #fff;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     font-size: 20px;
     font-family: "Inter", sans-serif;
@@ -263,6 +267,6 @@ ul {
     text-align: right;
 }
 
-.logo__text{
+.logo__text {
     font-weight: normal;
 }

@@ -42,7 +42,7 @@ footer {
 }
 
 .top__title {
-    font-size: 46px;
+    font-size: 3em;
     line-height: normal;
 }
 
@@ -191,7 +191,7 @@ footer {
 
 .read__inner {
     align-items: center;
-    margin: 2% 0;
+    margin: 7% 0;
     /* margin-top: 20px;
     margin-bottom: 30px; */
     display: flex;
@@ -221,4 +221,4 @@ footer {
     font-weight: 300;
 }
 
-/* From Uiverse.io by Yaya12085 */
+hr{margin-top: 7%;}
