@@ -1,11 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registration</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <link rel="stylesheet" href="/static/css/reg.css">
 </head>
 <body>
-  
+    <form class="form">
+        <p class="title">Login </p>
+        <p class="message">Signup now and get full access to our app. </p>
+        <div class="radio-input">
+            <label>
+                <input value="value-1" name="value-radio" id="value-1" type="radio" checked />
+                <span>Option 1</span>
+            </label>
+            <label>
+                <input value="value-2" name="value-radio" id="value-2" type="radio" />
+                <span>Option 2</span>
+            </label>
+            <span class="selection"></span>
+        </div>
+        <div class="flex">
+            <label id="dynamicLabel">
+                <input class="input" type="text" placeholder="" required="">
+                <span>Firstname</span>
+            </label>
+        </div>  
+        <label>
+            <input class="input" type="password" placeholder="" required="">
+            <span>Password</span>
+        </label>
+        <button class="submit">Submit</button>
+    </form>
+
+    <script src="/static/js/script.js"></script>
 </body>
 </html>
