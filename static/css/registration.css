@@ -2,7 +2,7 @@
      display: flex;
      justify-content: center;
      align-items: center;
-     height: 80vh;
+     height: 90vh;
      margin: 0;
  }
 
@@ -147,6 +147,8 @@
      box-shadow: -3px -3px 7px #d2d2f0e8,
          2px 2px 5px rgba(94, 104, 121, 0.288);
  }
+
+ 
 
 .text {
      font-size: 33px;
