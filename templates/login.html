@@ -4,9 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home</title>
+  <title>LogIn</title>
   <link rel="stylesheet" href="../static/css/main.css">
-  <link rel="stylesheet" href="../static/css/home.css">
+  <link rel="stylesheet" href="../static/css/registration.css">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,10 +30,10 @@
               <a href="home.html" class="menu__link">Home</a>
             </li>
             <li class="list__item">
-              <a href="/login" class="menu__link">Go to app</a>
+              <a href="login.html" class="menu__link">Go to app</a>
             </li>
             <li class="list__item">
-              <a href="#" class="menu__link">About us</a>
+              <a href="#" class="menu__link">About me</a>
             </li>
             <li class="list__item">
               <div class="badge" href="#">
@@ -48,64 +48,50 @@
     </div>
   </header>
   <main>
-    <section class="top">
-      <div class="container">
-        <div class="top__inner">
-          <div class="left">
-            <div class="text-top">
-              <h1 class="top__title">
-                Manage your tasks with ease!
-              </h1>
-              <p class="top__text">
-                - Easily add, edit, and track tasks to stay organized and productive. <br>
-                - Simple navigation, reminders, and task prioritization make the app ideal for personal and professional
-                use.
-              </p>
+    <!-- <form class="form">
+      <p class="title">Login </p>
+      <p class="message">Signup now and get full access to our app. </p>
+      <div class="flex">
+        <label>
+          <input class="input" type="text" placeholder="" required="">
+          <span>Email or nickname</span>
+        </label>
+      </div>
+
+      <label>
+        <input class="input" type="password" placeholder="" required="">
+        <span>Password</span>
+      </label>
+    
+      <button class="submit">Submit</button>
+      <p class="signin">Are you not registered? <a href="registration.html">Create an account</a> </p>
+    </form> -->
+
+     <div class="content">
+         <div class="text">
+            Login
+         </div>
+         <form action="#">
+            <div class="field">
+               <input required="" type="text" class="input">
+               <span class="span"><svg class="" xml:space="preserve" style="enable-background:new 0 0 512 512" viewBox="0 0 512 512" y="0" x="0" height="20" width="50" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg"><g><path class="" data-original="#000000" fill="#595959" d="M256 0c-74.439 0-135 60.561-135 135s60.561 135 135 135 135-60.561 135-135S330.439 0 256 0zM423.966 358.195C387.006 320.667 338.009 300 286 300h-60c-52.008 0-101.006 20.667-137.966 58.195C51.255 395.539 31 444.833 31 497c0 8.284 6.716 15 15 15h420c8.284 0 15-6.716 15-15 0-52.167-20.255-101.461-57.034-138.805z"></path></g></svg></span>
+               <label class="label">Email or Nickname</label>
             </div>
-            <div class="top__user-actions">
-              <a href="login.html" class="blue__button">
-                <p>Go to app</p>
-              </a>
-              <a href="#read_more" class="simple__button">Read more</a>
+            <div class="field">
+               <input required="" type="password" class="input">
+               <span class="span"><svg class="" xml:space="preserve" style="enable-background:new 0 0 512 512" viewBox="0 0 512 512" y="0" x="0" height="20" width="50" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg"><g><path class="" data-original="#000000" fill="#595959" d="M336 192h-16v-64C320 57.406 262.594 0 192 0S64 57.406 64 128v64H48c-26.453 0-48 21.523-48 48v224c0 26.477 21.547 48 48 48h288c26.453 0 48-21.523 48-48V240c0-26.477-21.547-48-48-48zm-229.332-64c0-47.063 38.27-85.332 85.332-85.332s85.332 38.27 85.332 85.332v64H106.668zm0 0"></path></g></svg></span>
+               <label class="label">Password</label>
             </div>
-          </div>
-          <img class="top__img" src="../static/img/top_img.png" alt="">
-
-        </div>
+            <!-- <div class="forgot-pass">
+               <a href="#">Forgot Password?</a>
+            </div> -->
+            <button class="submit__signin">Sign in</button>
+            <div class="sign-up">
+               Not a member?
+               <a href="registration.html">Signup now</a>
+            </div>
+         </form>
       </div>
-    </section>
-    <a name="read_more"></a>
-    <section class="read-more1">
-      <div class="container">
-        <div class="read__inner">
-          <img class="read__img" src="../static/img/read-more-img.png" alt="">
-          <div class="text-read">
-            <h1 class="read__title">Interface</h1>
-            <p class="read__text">- Separate tasks by categories and priorities to always know what’s important and
-              urgent. <br>
-              - Set reminders and deadlines for tasks so you never forget anything.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="read-more2">
-      <div class="container">
-        <div class="read__inner">
-          <div class="text-read">
-            <h1 class="read__title">Website</h1>
-            <p class="read__text">- Separate tasks by categories and priorities to always know what’s important and
-              urgent. <br>
-              - Set reminders and deadlines for tasks so you never forget anything.
-
-            </p>
-          </div>
-          <img class="read__img" src="../static/img/read-more-img.png" alt="">
-
-        </div>
-      </div>
-    </section>
   </main>
   <footer>
     <hr>
