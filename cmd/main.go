@@ -19,7 +19,7 @@ func main() {
 	fmt.Println("Graceful timeout:", wait)
 	srv := new(to_do_app.Server)
 	var taskService handlers.TaskHandler
-	taskService = &handlers.FileTaskService{}
+	
 	r := routes.NewMuxRoute(taskService)
 
 	go func() {

@@ -15,10 +15,10 @@ func NewMuxRoute(taskHandler handlers.TaskHandler) *mux.Router {
 	r.HandleFunc("/", handlers.MainPage)
 	r.HandleFunc("/login", handlers.Login)
 	r.HandleFunc("/registration", handlers.Registration)
-	r.HandleFunc("/tasks", taskHandler.GetTasks).Methods("GET")
-	r.HandleFunc("/tasks/{id:[0-9]+}", taskHandler.GetTask).Methods("GET")
-	r.HandleFunc("/tasks", taskHandler.CreateTask).Methods("POST").Headers("Content-Type", "application/json")
+	//r.HandleFunc("/tasks", taskHandler.GetTasks).Methods("GET")
+	//r.HandleFunc("/tasks/{id:[0-9]+}", taskHandler.GetTask).Methods("GET")
+	//r.HandleFunc("/tasks", taskHandler.CreateTask).Methods("POST").Headers("Content-Type", "application/json")
 	//r.HandleFunc("/tasks/{id:[0-9]+}", handlers.UpdateTask).Methods("PUT")
-	r.HandleFunc("/tasks/{id:[0-9]+}", taskHandler.DeleteTask).Methods("DELETE")
+	//r.HandleFunc("/tasks/{id:[0-9]+}", taskHandler.DeleteTask).Methods("DELETE")
 	return r
 }
