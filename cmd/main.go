@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/YurcheuskiRadzivon/to_do_app"
+	"github.com/YurcheuskiRadzivon/to_do_app/pkg/db"
 	"github.com/YurcheuskiRadzivon/to_do_app/pkg/handlers"
 	"github.com/YurcheuskiRadzivon/to_do_app/pkg/routes"
 )
@@ -18,8 +19,11 @@ func main() {
 	flag.Parse()
 	fmt.Println("Graceful timeout:", wait)
 	srv := new(to_do_app.Server)
+	database := db.DatabaseOpen()
+	defer database.GetDB().Close()
+
 	var taskService handlers.TaskHandler
-	
+
 	r := routes.NewMuxRoute(taskService)
 
 	go func() {
