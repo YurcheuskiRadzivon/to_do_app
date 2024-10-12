@@ -15,6 +15,7 @@ func NewMuxRoute(taskHandler handlers.TaskHandler) *mux.Router {
 	r.HandleFunc("/", handlers.MainPage)
 	r.HandleFunc("/login", handlers.Login).Methods("GET")
 	r.HandleFunc("/registration", handlers.Registration).Methods("GET")
+	//r.HandleFunc("/registration").Methods("POST")
 	//r.HandleFunc("/tasks", taskHandler.GetTasks).Methods("GET")
 	//r.HandleFunc("/tasks/{id:[0-9]+}", taskHandler.GetTask).Methods("GET")
 	//r.HandleFunc("/tasks", taskHandler.CreateTask).Methods("POST").Headers("Content-Type", "application/json")
