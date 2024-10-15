@@ -11,3 +11,10 @@ type TaskHandler interface {
 	PutTask(w http.ResponseWriter, req *http.Request)
 	DeleteTask(w http.ResponseWriter, req *http.Request)
 }
+
+type AccountHandler interface {
+	CreateAccount(w http.ResponseWriter, req *http.Request)
+	//UpdateUser() error
+	//DeleteUser() error
+	//ReadUser() error
+}

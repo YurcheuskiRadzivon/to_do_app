@@ -23,8 +23,9 @@ func main() {
 	defer database.GetDB().Close()
 
 	var taskService handlers.TaskHandler
-
-	r := routes.NewMuxRoute(taskService)
+	var accountService handlers.AccountHandler
+	accountService = database
+	r := routes.NewMuxRoute(taskService, accountService)
 
 	go func() {
 

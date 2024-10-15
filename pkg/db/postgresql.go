@@ -2,9 +2,13 @@ package db
 
 import (
 	"database/sql"
+	"encoding/json"
 	"log"
+	"net/http"
 
+	"github.com/YurcheuskiRadzivon/to_do_app/pkg/user"
 	_ "github.com/lib/pq"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type PostgreSQL struct {
@@ -30,8 +34,8 @@ func (ps *PostgreSQL) CreateTables() {
 	userTable := `
     CREATE TABLE IF NOT EXISTS "user" (
         id SERIAL PRIMARY KEY,
-        username VARCHAR(10) NOT NULL,
-        email VARCHAR(319) NOT NULL,
+        username VARCHAR(10) UNIQUE NOT NULL,
+        email VARCHAR(319)  UNIQUE NOT NULL,
         password BYTEA NOT NULL
     );`
 
@@ -56,4 +60,30 @@ func (ps *PostgreSQL) CreateTables() {
 	   }*/
 
 	log.Println("Tables created successfully in PostgreSQL!")
+}
+
+func (ps *PostgreSQL) CreateAccount(w http.ResponseWriter, req *http.Request) {
+
+	var regReq user.RegUser
+	err := json.NewDecoder(req.Body).Decode(&regReq)
+	if err != nil {
+		http.Error(w, `{"error": "Invalid request payload"}`, http.StatusBadRequest)
+		return
+	}
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(regReq.Password), bcrypt.DefaultCost)
+	if err != nil {
+		http.Error(w, `{"error": "Error setting password"}`, http.StatusInternalServerError)
+		return
+	}
+	query := `INSERT INTO "user" (username, email, password) VALUES ($1, $2, $3)`
+	_, err = ps.db.Exec(query, regReq.Username, regReq.Email, hashedPassword)
+	if err != nil {
+		http.Error(w, `{"error": "Error creating user"}`, http.StatusInternalServerError)
+		return
+	}
+	response := map[string]string{"message": "User registered successfully"}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(response)
+
 }
