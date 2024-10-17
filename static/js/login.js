@@ -42,8 +42,8 @@ document.addEventListener('DOMContentLoaded', function () {
             if (result.error) {
                 alert(result.error); 
             } else {
-                alert("______"); 
-                window.location.href = '/login'; 
+                alert("login successful"); 
+                window.location.href = '/registration'; 
             }
         })
         .catch(error => {

@@ -1,7 +1,6 @@
 package db
 
 import (
-	"bytes"
 	"database/sql"
 	"encoding/json"
 	"fmt"
@@ -112,18 +111,24 @@ func (ps *PostgreSQL) LoginUser(w http.ResponseWriter, req *http.Request) {
 		}
 		return
 	}
-	hashedPass, err := bcrypt.GenerateFromPassword([]byte(logReq.Password), bcrypt.DefaultCost)
-	if err != nil {
-		http.Error(w, `{"error": "Error setting password"}`, http.StatusInternalServerError)
-		return
-	}
-	if !bytes.Equal(hashedPass, pass) {
+
+	if err := bcrypt.CompareHashAndPassword(pass, []byte(logReq.Password)); err != nil {
 		http.Error(w, `{"error": "Invalid password"}`, http.StatusInternalServerError)
 		return
 	}
+	query = fmt.Sprintf(`SELECT id, username FROM "user" WHERE email = '%s';`, logReq.Email)
+	var userId int
+	var username string
+	if err = ps.db.QueryRow(query).Scan(&userId, &username); err != nil {
+		http.Error(w, fmt.Sprintf(`{"error": "%s"}`, err), http.StatusNotFound)
+		return
+	}
 	payload := jwt.MapClaims{
-		"sub": logReq.Email,
-		"exp": time.Now().Add(time.Hour * 72).Unix(),
+
+		"email":  logReq.Email,
+		"name":   username,
+		"sub_id": userId,
+		"exp":    time.Now().Add(time.Hour * 72).Unix(),
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, payload)
 	t, err := token.SignedString(user.GetJwtSecretKey())
@@ -131,8 +136,19 @@ func (ps *PostgreSQL) LoginUser(w http.ResponseWriter, req *http.Request) {
 		http.Error(w, `{"error": "JWT token signing"}`, http.StatusInternalServerError)
 		return
 	}
-	response := user.LoginResponse{AccessToken: t}
+	http.SetCookie(w, &http.Cookie{
+		Name:     "jwt",
+		Value:    t,
+		Expires:  time.Now().Add(1 * time.Hour),
+		HttpOnly: true,
+		Secure:   false,
+		Path:     "/",
+	})
+	//response := user.LoginResponse{AccessToken: t}
+
+	response := map[string]string{"message": "Login successful"}
 	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusAccepted)
 	json.NewEncoder(w).Encode(response)
 
 }
