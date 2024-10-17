@@ -1,24 +1,23 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const form = document.getElementById('registerForm');
+    const form = document.getElementById('loginForm');
     
     form.addEventListener('submit', function (event) {
         event.preventDefault(); 
 
-        const username = document.getElementById('username').value;
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
 
         
-        if (username === '' || email === '' || password === '') {
+        if (email === '' || password === '') {
             alert('All fields are required');
             return;
         }
         if (!validateEmail(email)) {
-            alert('Invalid email format');
+            alert('Incorrect email');
             return;
         }
         if (password.length < 6) {
-            alert('Password must be at least 6 characters');
+            alert('Incorrect password');
             return;
         }
         /*if (!validateUsername(username)) {
@@ -27,12 +26,11 @@ document.addEventListener('DOMContentLoaded', function () {
         }*/
 
         const data = {
-            username: username,
             email: email,
             password: password
         };
 
-        fetch('/registration', {
+        fetch('/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -44,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (result.error) {
                 alert(result.error); 
             } else {
-                alert("Registration was successful"); 
+                alert("______"); 
                 window.location.href = '/login'; 
             }
         })

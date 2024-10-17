@@ -10,5 +10,5 @@ type Database interface {
 	InitDB(dataSourceName string)
 	GetDB() *sql.DB
 	CreateTables()
-	handlers.AccountHandler
+	handlers.UserHandler
 }

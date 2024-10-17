@@ -1,12 +1,16 @@
 package db
 
 import (
+	"bytes"
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/YurcheuskiRadzivon/to_do_app/pkg/user"
+	"github.com/golang-jwt/jwt"
 	_ "github.com/lib/pq"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -62,11 +66,11 @@ func (ps *PostgreSQL) CreateTables() {
 	log.Println("Tables created successfully in PostgreSQL!")
 }
 
-func (ps *PostgreSQL) CreateAccount(w http.ResponseWriter, req *http.Request) {
+func (ps *PostgreSQL) CreateUser(w http.ResponseWriter, req *http.Request) {
 
-	var regReq user.RegUser
-	err := json.NewDecoder(req.Body).Decode(&regReq)
-	if err != nil {
+	var regReq user.RegisterRequest
+
+	if err := json.NewDecoder(req.Body).Decode(&regReq); err != nil {
 		http.Error(w, `{"error": "Invalid request payload"}`, http.StatusBadRequest)
 		return
 	}
@@ -78,12 +82,57 @@ func (ps *PostgreSQL) CreateAccount(w http.ResponseWriter, req *http.Request) {
 	query := `INSERT INTO "user" (username, email, password) VALUES ($1, $2, $3)`
 	_, err = ps.db.Exec(query, regReq.Username, regReq.Email, hashedPassword)
 	if err != nil {
-		http.Error(w, `{"error": "Error creating user"}`, http.StatusInternalServerError)
+		http.Error(w, fmt.Sprintf(`{"error": "Error creating user %v"}`, err), http.StatusInternalServerError)
 		return
 	}
 	response := map[string]string{"message": "User registered successfully"}
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(response)
+
+}
+func (ps *PostgreSQL) LoginUser(w http.ResponseWriter, req *http.Request) {
+	var (
+		logReq user.LoginRequest
+	//errBadCredentials = errors.New("email or password is incorrect")
+	)
+
+	if err := json.NewDecoder(req.Body).Decode(&logReq); err != nil {
+		http.Error(w, `{"error": "Invalid request payload"}`, http.StatusBadRequest)
+		return
+	}
+	query := fmt.Sprintf(`SELECT password FROM "user" WHERE email = '%s';`, logReq.Email)
+	var pass []byte
+	err := ps.db.QueryRow(query).Scan(&pass)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			http.Error(w, `{"error": "User not found"}`, http.StatusNotFound)
+		} else {
+			http.Error(w, fmt.Sprintf(`{"error": "%s"}`, err), http.StatusInternalServerError)
+		}
+		return
+	}
+	hashedPass, err := bcrypt.GenerateFromPassword([]byte(logReq.Password), bcrypt.DefaultCost)
+	if err != nil {
+		http.Error(w, `{"error": "Error setting password"}`, http.StatusInternalServerError)
+		return
+	}
+	if !bytes.Equal(hashedPass, pass) {
+		http.Error(w, `{"error": "Invalid password"}`, http.StatusInternalServerError)
+		return
+	}
+	payload := jwt.MapClaims{
+		"sub": logReq.Email,
+		"exp": time.Now().Add(time.Hour * 72).Unix(),
+	}
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, payload)
+	t, err := token.SignedString(user.GetJwtSecretKey())
+	if err != nil {
+		http.Error(w, `{"error": "JWT token signing"}`, http.StatusInternalServerError)
+		return
+	}
+	response := user.LoginResponse{AccessToken: t}
+	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(response)
 
 }

@@ -21,9 +21,10 @@ func main() {
 	srv := new(to_do_app.Server)
 	database := db.DatabaseOpen()
 	defer database.GetDB().Close()
-
-	var taskService handlers.TaskHandler
-	var accountService handlers.AccountHandler
+	var (
+		taskService    handlers.TaskHandler
+		accountService handlers.UserHandler
+	)
 	accountService = database
 	r := routes.NewMuxRoute(taskService, accountService)
 
