@@ -11,13 +11,20 @@ footer {
 }
 
 .top {
-    height: 90vh;
+    height: fit-content;
 }
 
 .read-more2,
 .read-more1 {
     margin-top: 30px;
     margin-bottom: 30px;
+}
+
+.read-more1 .read__text,
+.read-more1 .read__title,
+.read-more2 .read__text,
+.read-more2 .read__title {
+    margin: 0 15px;
 }
 
 .top__inner {
@@ -55,7 +62,7 @@ footer {
 
 .simple__button {
     width: 176px;
-    color: #02439b;
+    color: #fff;
     font-size: 20px;
     font-weight: 600;
 }
@@ -124,7 +131,6 @@ footer {
     background: #02439b;
 } */
 
-/* From Uiverse.io by Randdose */
 .blue__button {
     all: unset;
     display: flex;
@@ -221,4 +227,162 @@ footer {
     font-weight: 300;
 }
 
-hr{margin-top: 7%;}
+hr {
+    margin-top: 7%;
+}
+
+@media(max-width:1000px) {
+
+    .top__inner,
+    .read__inner {
+        max-width: 950px;
+        /* width: 100%; */
+        /* display: block; */
+        margin: 0 auto;
+    }
+
+    .top__img,
+    .read__img {
+        max-width: 500px;
+        width: 50%;
+        height: fit-content;
+    }
+
+    .left {
+        width: 50%;
+        max-width: 450px;
+    }
+
+    .text-read,
+    .text-top {
+
+        width: 100%;
+        height: fit-content;
+    }
+
+    .top__text,
+    .read__text {
+        font-size: auto;
+    }
+
+    .top__title,
+    .read__title {
+        font-size: 55px;
+    }
+
+    .blue__button,
+    .simple__button {
+        /* color: white; */
+
+        font-size: 15px;
+        margin: 0 auto;
+    }
+
+    .blue__button {
+        padding: 10px 27px;
+    }
+
+    .top__user-actions {
+        height: 50px;
+        justify-content: space-between;
+    }
+
+    .top {
+        height: fit-content;
+    }
+}
+
+
+@media(max-width:800px) {
+    .top__title{font-size: 35px;}
+    .top__text{font-size: 15px;}
+    .blue__button {
+        width: 70px;
+        text-align: center;
+        padding: 8px 18px;
+    }
+    .blue__button,
+    .simple__button {
+        color: #fff;
+
+        text-align: center;
+        font-size: 12px;
+    }
+}
+
+@media(max-width:560px) {
+
+    .top__inner {
+        width: 100%;
+        display: block;
+        margin: 0 auto;
+    }
+
+    .top__img {
+        max-width: 540px;
+        width: 100%;
+        height: fit-content;
+    }
+
+    .blue__button,
+    .simple__button {
+        /* color: white; */
+
+        font-size: 15px;
+        margin: 0 auto;
+    }
+
+    .blue__button {
+        width: 79px;
+        padding: 10px 27px;
+    }
+    .left {
+        margin: 0 auto;
+        width: auto;
+    }
+
+
+    .text-top {
+        max-width: 540px;
+        width: 100%;
+        height: fit-content;
+    }
+
+    .top__text {
+
+        font-size: 15px;
+    }
+
+    .top__title {
+        font-size: 40px;
+    }
+
+    .read__text {
+        font-size: 15px;
+    }
+
+    .read__title {
+        font-size: 30px;
+    }
+/* 
+    .blue__button,
+    .simple__button {
+        color: white;
+
+        font-size: 15px;
+        margin: 0 auto;
+    }
+
+    .blue__button {
+        padding: 10px 27px;
+    }
+
+    .top__user-actions {
+        height: 50px;
+        justify-content: space-between;
+    } */
+
+    .top {
+        height: fit-content;
+    }
+}

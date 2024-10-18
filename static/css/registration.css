@@ -148,9 +148,9 @@
          2px 2px 5px rgba(94, 104, 121, 0.288);
  }
 
- 
 
-.text {
+
+ .text {
      font-size: 33px;
      font-weight: 800;
      margin-bottom: 35px;
@@ -184,12 +184,12 @@
          inset -5px -5px 10px #ffffff73;
  }
 
-  .input:focus {
+ .input:focus {
      box-shadow: inset 1px 1px 2px #BABECC,
          inset -1px -1px 2px #ffffff73;
  }
 
-.span {
+ .span {
      position: absolute;
      color: #595959;
      width: 50px;
@@ -265,4 +265,44 @@
 
  .sign-up a:hover {
      text-decoration: underline;
+ }
+
+ .radio-inputs {
+     margin: 0 auto;
+     position: relative;
+     display: flex;
+     /* flex-wrap: wrap; */
+     border-radius: 0.5rem;
+     background-color: #dde1e7;
+     box-sizing: border-box;
+     box-shadow: 0 0 0px 1px rgba(0, 0, 0, 0.06);
+     padding: 0.25rem;
+     width: auto;
+     font-size: 17px;
+ }
+
+ .radio-inputs .radio {
+     flex: 1 1 auto;
+     text-align: center;
+ }
+
+ .radio-inputs .radio input {
+     display: none;
+ }
+
+ .radio-inputs .radio .name {
+     display: flex;
+     cursor: pointer;
+     align-items: center;
+     justify-content: center;
+     border-radius: 0.5rem;
+     border: none;
+     padding: .5rem 0;
+     /* color: rgba(51, 65, 85, 1); */
+     color: #595959;
+     transition: all .15s ease-in-out;
+ }
+
+ .radio-inputs .radio input:checked+.name {
+     background-color: #fff;
  }

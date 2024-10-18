@@ -217,7 +217,7 @@ ul {
     display: flex;
     background-color: #8db0de;
     color: #ffffff;
-    padding: 0.5rem 1.4rem;
+    padding: 0.2rem 0.7rem;
     font-size: 0.875rem;
     line-height: 1.25rem;
     font-weight: 700;
@@ -271,14 +271,83 @@ ul {
     font-weight: normal;
 }
 
-@media(max-width:430px) {
+
+
+@media(max-width:1000px) {
     .container {
         /* width: 100%; */
-        max-width: 430px;
+        max-width: 950px;
         padding: 0 15px;
     }
 
+
+    .header__name {
+
+        font-size: 23px;
+    }
+
+    .header__inner {
+        height: 100px;
+
+        width: 100%;
+        /* justify-content: center; */
+    }
+
+    /* .menu__list {
+        padding: 20px 0;
+        margin: 0;
+        gap: 0;
+        justify-content: space-between;
+        max-width: 400px;
+        width: auto;
+    } */
+
+    .menu__link,
+    .list__item {
+        font-size: 20px;
+        text-align: center;
+    }
+
+    .container__f {
+        max-width: 950px;
+    }
+
+    .footer__inner {
+        max-height: 50px;
+        margin: 5px 0 0 0;
+    }
+
+    .logo__text {
+        font-size: 15px;
+    }
+
+
+}
+
+@media(max-width:800px) {
+    
+    .container {
+        /* width: 100%; */
+        max-width: 540px;
+        padding: 0 15px;
+    }
+    .logo__img{margin:5px 0 0 0 5px;width: 28px;height: 28px;}
+    .header__name{font-size: 18px;}
+    .menu__list {
+        gap: 0 40px;
+        padding: 0 0 0 20px;
+    }
+    .menu__link,
+    .list__item {
+        font-size: 15px;
+    }
+}
+
+@media(max-width:560px) {
+   
+
     .header {
+        height: 100px;
         margin: 20px 0;
     }
 
@@ -290,11 +359,15 @@ ul {
     .header__inner {
         width: 100%;
         display: block;
+        /* justify-content: center; */
     }
 
     .menu__list {
         padding: 20px 0;
         margin: 0;
+
+        max-width: 540px;
+        width: auto;
     }
 
     .menu__link,
@@ -304,7 +377,7 @@ ul {
     }
 
     .container__f {
-        max-width: 430px;
+        max-width: 540px;
     }
 
     .footer__inner {
