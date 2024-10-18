@@ -29,3 +29,11 @@ func Registration(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error executing template: "+err.Error(), http.StatusInternalServerError)
 	}
 }
+func Tasks(w http.ResponseWriter, r *http.Request) {
+	tmplPath := filepath.Join("..", "templates", "tasks.html")
+	tmpl := ParseFiles(w, tmplPath)
+	err := tmpl.Execute(w, nil)
+	if err != nil {
+		http.Error(w, "Error executing template: "+err.Error(), http.StatusInternalServerError)
+	}
+}
