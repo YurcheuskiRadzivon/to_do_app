@@ -32,24 +32,24 @@ func NewUserRepository(dsnStr string) (UserRepository, error) {
 }
 func (ur *userRepository) GetUser(nickname, email string) (*model.User, error) {
 	var User model.User
-	query := `SELECT id,name,nickname,email FROM "User" WHERE nickname=$1 AND email=$2 `
-	err := ur.db.QueryRow(context.Background(), query, nickname, email).Scan(&User.ID, &User.Name, &User.Nickname, &User.Email)
+	query := `SELECT id,nickname,email FROM "User" WHERE nickname=$1 AND email=$2 `
+	err := ur.db.QueryRow(context.Background(), query, nickname, email).Scan(&User.ID, &User.Nickname, &User.Email)
 	if err != nil {
 		return nil, err
 	}
 	return &User, nil
 }
 func (ur *userRepository) InsertUser(User model.UserHash) error {
-	query := `INSERT INTO "User"(name,nickname,email,password) VALUES($1,$2,$3,$4)`
-	_, err := ur.db.Exec(context.Background(), query, User.Name, User.Nickname, User.Email, User.Password)
+	query := `INSERT INTO "User"(nickname,email,password) VALUES($1,$2,$3)`
+	_, err := ur.db.Exec(context.Background(), query, User.Nickname, User.Email, User.Password)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 func (ur *userRepository) UpdateUser(id int, User model.User) error {
-	query := `UPDATE "user" SET name=$1, nickname=$2, email=$3 WHERE id=$4`
-	_, err := ur.db.Exec(context.Background(), query, User.Name, User.Nickname, User.Email, User.ID)
+	query := `UPDATE "user" SET nickname=$1, email=$2 WHERE id=$3`
+	_, err := ur.db.Exec(context.Background(), query, User.Nickname, User.Email, User.ID)
 	if err != nil {
 		return err
 	}

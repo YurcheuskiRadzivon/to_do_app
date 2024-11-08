@@ -4,12 +4,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registration</title>
-  <link rel="stylesheet" href="/static/css/main.css">
-  <link rel="stylesheet" href="/static/css/registration.css">
+  <title>LogIn</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/register.css">
 
-  <link rel="shortcut icon" href="../static/img/logo2.png">
-
+  <link rel="shortcut icon" href="/img/logo2.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,7 +22,7 @@
     <div class="container">
       <div class="header__inner">
         <div class="logo">
-          <img class="logo__img" src="/static/img/logo2.png" alt="">
+          <img class="logo__img" src="/img/logo2.png" alt="">
           <span class="header__name">ToDoApp</span>
         </div>
 
@@ -53,65 +52,67 @@
   <main>
 
 
-    <div class="content">
-      <div class="text">
-        Signin
-      </div>
-      <form id="registerForm" action="/registration" method="post">
-        <div class="field">
-          <input required="" type="text" class="input" id="username" name="username">
-          <span class="span"><svg class="" xml:space="preserve" style="enable-background:new 0 0 512 512"
+
+     <div class="content">
+         <div class="text">
+            Login
+         </div>
+         <form id="loginForm" action="/login" method="post">
+             <div class="field">
+                 <input required="" type="text" class="input" id="username" name="username">
+                 <span class="span"><svg class="" xml:space="preserve" style="enable-background:new 0 0 512 512"
               viewBox="0 0 512 512" y="0" x="0" height="20" width="50" xmlns:xlink="http://www.w3.org/1999/xlink"
               version="1.1" xmlns="http://www.w3.org/2000/svg">
               <g>
                 <path class="" data-original="#000000" fill="#595959"
-                  d="M256 0c-74.439 0-135 60.561-135 135s60.561 135 135 135 135-60.561 135-135S330.439 0 256 0zM423.966 358.195C387.006 320.667 338.009 300 286 300h-60c-52.008 0-101.006 20.667-137.966 58.195C51.255 395.539 31 444.833 31 497c0 8.284 6.716 15 15 15h420c8.284 0 15-6.716 15-15 0-52.167-20.255-101.461-57.034-138.805z">
+                      d="M256 0c-74.439 0-135 60.561-135 135s60.561 135 135 135 135-60.561 135-135S330.439 0 256 0zM423.966 358.195C387.006 320.667 338.009 300 286 300h-60c-52.008 0-101.006 20.667-137.966 58.195C51.255 395.539 31 444.833 31 497c0 8.284 6.716 15 15 15h420c8.284 0 15-6.716 15-15 0-52.167-20.255-101.461-57.034-138.805z">
                 </path>
               </g>
             </svg></span>
-          <label class="label">Nickname</label>
-        </div>
-        <div class="field">
-          <input required="" type="text" class="input" id="email" name="email">
-          <span class="span"><svg xmlns="http://www.w3.org/2000/svg" width="45" viewBox="0 0 32 32" fill="#595959"
-              height="20">
+                 <label class="label">Nickname</label>
+             </div>
+             <div class="field">
+                 <input required="" type="text" class="input" id="email" name="email">
+                 <span class="span"><svg xmlns="http://www.w3.org/2000/svg" width="45" viewBox="0 0 32 32" fill="#595959"
+                                         height="20">
               <g data-name="Layer 3" id="Layer_3">
                 <path
-                stroke="#595959" stroke-width="2" d="m30.853 13.87a15 15 0 0 0 -29.729 4.082 15.1 15.1 0 0 0 12.876 12.918 15.6 15.6 0 0 0 2.016.13 14.85 14.85 0 0 0 7.715-2.145 1 1 0 1 0 -1.031-1.711 13.007 13.007 0 1 1 5.458-6.529 2.149 2.149 0 0 1 -4.158-.759v-10.856a1 1 0 0 0 -2 0v1.726a8 8 0 1 0 .2 10.325 4.135 4.135 0 0 0 7.83.274 15.2 15.2 0 0 0 .823-7.455zm-14.853 8.13a6 6 0 1 1 6-6 6.006 6.006 0 0 1 -6 6z">
+                        stroke="#595959" stroke-width="2" d="m30.853 13.87a15 15 0 0 0 -29.729 4.082 15.1 15.1 0 0 0 12.876 12.918 15.6 15.6 0 0 0 2.016.13 14.85 14.85 0 0 0 7.715-2.145 1 1 0 1 0 -1.031-1.711 13.007 13.007 0 1 1 5.458-6.529 2.149 2.149 0 0 1 -4.158-.759v-10.856a1 1 0 0 0 -2 0v1.726a8 8 0 1 0 .2 10.325 4.135 4.135 0 0 0 7.83.274 15.2 15.2 0 0 0 .823-7.455zm-14.853 8.13a6 6 0 1 1 6-6 6.006 6.006 0 0 1 -6 6z">
                 </path>
               </g>
             </svg>
           </span>
-          <label class="label">Email</label>
-        </div>
-        <div class="field">
-          <input required="" type="password" class="input" id="password" name="password">
-          <span class="span"><svg class=""  xml:space="preserve" style="enable-background:new 0 0 512 512"
+                 <label class="label">Email</label>
+             </div>
+             <div class="field">
+                 <input required="" type="password" class="input" id="password" name="password">
+                 <span class="span"><svg class=""  xml:space="preserve" style="enable-background:new 0 0 512 512"
               viewBox="0 0 512 512" y="0" x="0" height="20" width="50" xmlns:xlink="http://www.w3.org/1999/xlink"
               version="1.1" xmlns="http://www.w3.org/2000/svg">
               <g>
                 <path class="" data-original="#000000" fill="#595959"
-                  d="M336 192h-16v-64C320 57.406 262.594 0 192 0S64 57.406 64 128v64H48c-26.453 0-48 21.523-48 48v224c0 26.477 21.547 48 48 48h288c26.453 0 48-21.523 48-48V240c0-26.477-21.547-48-48-48zm-229.332-64c0-47.063 38.27-85.332 85.332-85.332s85.332 38.27 85.332 85.332v64H106.668zm0 0">
+                      d="M336 192h-16v-64C320 57.406 262.594 0 192 0S64 57.406 64 128v64H48c-26.453 0-48 21.523-48 48v224c0 26.477 21.547 48 48 48h288c26.453 0 48-21.523 48-48V240c0-26.477-21.547-48-48-48zm-229.332-64c0-47.063 38.27-85.332 85.332-85.332s85.332 38.27 85.332 85.332v64H106.668zm0 0">
                 </path>
               </g>
             </svg> </span>
-          <label class="label">Password</label>
-        </div>
+                 <label class="label">Password</label>
+             </div>
 
-        <button class="submit__signin">Sign in</button>
-        <div class="sign-up">
-          Already have an account?
-          <a href="/login">Login</a>
-        </div>
-      </form>
-    </div>
+            <button class="submit__signin">Log in</button>
+            <div class="sign-up">
+               Not a member?
+               <a href="/register">Signup now</a>
+            </div>
+         </form>
+
+      </div>
   </main>
   <footer>
     <hr>
     <div class="container__f">
       <div class="footer__inner">
         <div class="logo">
-          <img class="logo__img" src="../static/img/logo1.png" alt="">
+          <img class="logo__img" src="/img/logo1.png" alt="">
           <span class="logo__text">© 2024 Сommodum, Inc</span>
         </div>
         <div class="footer__buttons">
@@ -143,7 +144,7 @@
       </div>
     </div>
   </footer>
-  <script src="../static/js/registration.js"></script>
+  <script src="/js/login.js"></script>
 </body>
 
 </html>

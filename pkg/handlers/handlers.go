@@ -22,7 +22,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 }
 func Registration(w http.ResponseWriter, r *http.Request) {
-	tmplPath := filepath.Join("..", "templates", "registration.html")
+	tmplPath := filepath.Join("..", "templates", "register.html")
 	tmpl := ParseFiles(w, tmplPath)
 	err := tmpl.Execute(w, nil)
 	if err != nil {
