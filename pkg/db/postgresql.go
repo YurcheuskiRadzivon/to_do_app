@@ -68,7 +68,7 @@ func (ps *PostgreSQL) CreateTables() {
 func (ps *PostgreSQL) CreateUser(w http.ResponseWriter, req *http.Request) {
 
 	var regReq user.RegisterRequest
-
+	//
 	if err := json.NewDecoder(req.Body).Decode(&regReq); err != nil {
 		http.Error(w, `{"error": "Invalid request payload"}`, http.StatusBadRequest)
 		return

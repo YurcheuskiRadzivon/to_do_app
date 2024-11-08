@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 alert(result.error); 
             } else {
                 alert("login successful"); 
-                window.location.href = '/tasks'; 
+                window.location.href = '/redirect'; 
             }
         })
         .catch(error => {

@@ -10,3 +10,5 @@ func DatabaseOpen() Database {
 	return database
 
 }
+
+//

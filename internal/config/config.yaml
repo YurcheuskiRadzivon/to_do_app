@@ -1,0 +1,6 @@
+database:
+  user: "postgres"
+  password: "94508443r"
+  host: "localhost"
+  port: "5432"
+  name: "ToDoApp"

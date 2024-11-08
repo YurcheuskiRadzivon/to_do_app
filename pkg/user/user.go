@@ -1,5 +1,6 @@
 package user
 
+//переименовать в энтити
 type RegisterRequest struct {
 	Username string `json:"username"`
 	Email    string `json:"email"`
