@@ -8,7 +8,6 @@ import (
 	"github.com/YurcheuskiRadzivon/to_do_app/internal/tda_logic/server"
 	initia "github.com/YurcheuskiRadzivon/to_do_app/internal/tda_logic/utils/initialization"
 	"log"
-	"net/http"
 	"path/filepath"
 	"time"
 )
@@ -29,13 +28,11 @@ func main() {
 		log.Fatalf("Error: %v", err)
 	}
 	app := routes.NewFiberRouter(userHandler)
-	_ = app
-	srv := new(server.Server)
+	srv := server.NewServer(app)
+
 	go func() {
 
-		if err := srv.Run("8080", app); err != nil && err != http.ErrServerClosed {
-			log.Fatalf("error occured while running http server", err.Error())
-		}
+		srv.Run("8080")
 	}()
 	srv.SignalWaiting(wait)
 

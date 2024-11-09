@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }*/
 
         const data = {
-            username: username, email: email, password: password
+            nickname: username, email: email, password: password
         };
 
         fetch('/register', {

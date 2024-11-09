@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const password = document.getElementById('password').value;
 
 
-        if (username ==='' ||email === '' || password === '') {
+        if (username === '' || email === '' || password === '') {
             alert('All fields are required');
             return;
         }
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         const data = {
-            username: username, email: email, password: password
+            nickname: username, email: email, password: password
         };
 
         fetch('/login', {
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const tokenName = "tokenAuth";
                     document.cookie = `${tokenName}=${result.token}; path=/; max-age=86400;`;
                     alert('Login successful!');
-                    window.location.href = '/';
+                    window.location.href = '/tasks';
                 }
             })
         /*.catch(error => {

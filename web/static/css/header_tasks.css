@@ -42,7 +42,10 @@ body {
 .left-part__tasks {
     display: flex;
 }
-
+.logo {
+    display: flex;
+    flex-wrap: nowrap;
+}
 .logo__img {
     width: 32px;
     height: 32px;
@@ -159,18 +162,7 @@ body {
     border-radius: 999px;
 }
 
-.inspired {
-    position: absolute;
-    bottom: 8%;
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 12px;
-    text-decoration: none;
-    transition: color 0.2s ease;
-}
 
-.inspired:hover {
-    color: rgba(255, 255, 255, 0.8);
-}
 
 .navigation-card {
     width: fit-content;
