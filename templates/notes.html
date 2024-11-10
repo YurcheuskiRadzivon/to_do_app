@@ -1,70 +1,14 @@
-document.addEventListener("DOMContentLoaded", function () {
-  tasks.forEach((task) => addTask(task.name, task.description));
-
-  listOfTasks.addEventListener("click", function (event) {
-    const target = event.target.closest("button, label"); // Найти ближайшую кнопку или label
-
-    if (target && target.classList.contains("action_button")) {
-      const actionsPanel = target.nextElementSibling;
-      actionsPanel.style.display =
-        actionsPanel.style.display === "none" ? "block" : "none";
-      target.style.display = "none"; // Скрыть кнопку действий
-    }
-
-    if (target && target.htmlFor === "delete") {
-      const taskElement = target.closest(".task_line");
-      taskElement.remove();
-      
-    }
-
-    if (target && target.htmlFor === "done") {
-      const taskElement = target.closest(".task_line");
-      taskElement.querySelector(".content").style.textDecoration =
-        "line-through";
-    }
-
-    if (target && target.htmlFor === "rename") {
-      const taskElement = target.closest(".task_line");
-      const newName = prompt("Enter new task name:");
-      const newDesc = prompt("Enter new task description:");
-      if (newName && newDesc) {
-        taskElement.querySelector(".heading").textContent = newName;
-        taskElement.querySelector(".para").textContent = newDesc;
-      }
-    }
-  });
-});
-
-const submitBtn = document.getElementById("submit_task");
-const listOfTasks = document.getElementById("list__tasks");
-const taskName = document.getElementById("name");
-const taskDescript = document.getElementById("description");
-var ind = 0;
-
-var tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-
-function saveTasks() {
-  localStorage.setItem("tasks", JSON.stringify(tasks));
-}
-
-function addTask(name, desc) {
-  listOfTasks.insertAdjacentHTML(
-    "beforeend",
-    `
-  <li class="task_line">
-    <div class="task" data-ind="${ind++}">
-      <div class="content">
-        <p class="heading">${name}</p>
-        <p class="para">${desc}</p>
-        <p class="para para-sm">Jan 1, 2024</p>
-      </div>
-    </div>
-    <button class="action_button">
-      <svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
-      <path d="M140,128a12,12,0,1,1-12-12A12,12,0,0,1,140,128ZM128,72a12,12,0,1,0-12-12A12,12,0,0,0,128,72Zm0,112a12,12,0,1,0,12,12A12,12,0,0,0,128,184Z"></path></svg>
-    </button>
-    <div class="user-actions-with-task" style="display: none">
-      <div class="card">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../static/css/tasks.css">
+</head>
+<body>
+    <div class="user-actions-with-task" >
+        <div class="card">
           <ul
             class="list"
             style="--color:#5353ff;--hover-storke:#fff; --hover-color:#fff"
@@ -171,21 +115,5 @@ function addTask(name, desc) {
           </ul>
         </div>
     </div>
-  </li>
-  `
-  );
-  taskDescript.value = "";
-  taskName.value = "";
-}
-
-submitBtn.onclick = function () {
-  if (taskName.value.length != 0 && taskDescript.value.length != 0) {
-    var newTask = { name: taskName.value, description: taskDescript.value };
-    tasks.push(newTask);
-    addTask(taskName.value, taskDescript.value);
-    saveTasks();
-  } else {
-    alert("You can't add an empty task");
-  }
-  console.log(tasks);
-};
+</body>
+</html>

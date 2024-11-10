@@ -153,3 +153,126 @@ submitBtn.onclick = function () {
   }
   console.log(tasks);
 };
+
+
+
+
+
+
+
+
+
+
+
+<div class="card">
+  <ul class="list" style="--color:#5353ff;--hover-storke:#fff; --hover-color:#fff">
+    <li class="element">
+      <button class="action_button">Actions</button>
+      <div class="actions_panel" style="display: none;">
+        <label for="rename">
+          <input type="radio" id="rename" name="filed" />
+          <svg
+            class="lucide lucide-pencil"
+            stroke-linejoin="round"
+            stroke-linecap="round"
+            stroke-width="2"
+            stroke="#7e8590"
+            fill="none"
+            viewBox="0 0 24 24"
+            height="25"
+            width="25"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"
+            ></path>
+            <path d="m15 5 4 4"></path>
+          </svg>
+          Rename
+        </label>
+        <div class="separator"></div>
+        <label for="done">
+          <input type="radio" id="done" name="filed" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            x="0px"
+            y="0px"
+            width="40"
+            height="40"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#7e8590"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              fill="none"
+              d="M 20.292969 5.2929688 L 9 16.585938 L 4.7070312 12.292969 L 3.2929688 13.707031 L 9 19.414062 L 21.707031 6.7070312 L 20.292969 5.2929688 z"
+            ></path>
+          </svg>
+          Done
+        </label>
+        <div class="separator"></div>
+        <label for="delete">
+          <input type="radio" id="delete" name="filed" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#7e8590"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-trash-2"
+          >
+            <path d="M3 6h18"></path>
+            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+            <line x1="10" x2="10" y1="11" y2="17"></line>
+            <line x1="14" x2="14" y1="11" y2="17"></line>
+          </svg>
+          Delete
+        </label>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const listOfTasks = document.querySelector('.list');
+
+  listOfTasks.addEventListener('click', function(event) {
+    const target = event.target.closest('button, label'); // Найти ближайшую кнопку или label
+
+    if (target && target.classList.contains('action_button')) {
+      const actionsPanel = target.nextElementSibling;
+      actionsPanel.style.display = actionsPanel.style.display === 'none' ? 'block' : 'none';
+      target.style.display = 'none'; // Скрыть кнопку действий
+    }
+
+    if (target && target.htmlFor === 'delete') {
+      const taskElement = target.closest('.card');
+      taskElement.remove();
+    }
+
+    if (target && target.htmlFor === 'done') {
+      const taskElement = target.closest('.card');
+      taskElement.querySelector('.content').style.textDecoration = 'line-through';
+    }
+
+    if (target && target.htmlFor === 'rename') {
+      const taskElement = target.closest('.card');
+      const newName = prompt("Enter new task name:");
+      const newDesc = prompt("Enter new task description:");
+      if (newName && newDesc) {
+        taskElement.querySelector('.heading').textContent = newName;
+        taskElement.querySelector('.para').textContent = newDesc;
+      }
+    }
+  });
+});
+</script>
