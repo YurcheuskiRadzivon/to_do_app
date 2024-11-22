@@ -17,8 +17,10 @@ func NewServer(app *fiber.App) *Server {
 	return &Server{app: app}
 }
 
-func (s *Server) Run(port string) error {
-	return s.app.Listen(":" + port)
+func (s *Server) Run() {
+	if err := s.app.Listen(":8080"); err != nil {
+		log.Fatalf("Error starting server: %v", err)
+	}
 }
 
 func (s *Server) SignalWaiting(timeOut time.Duration) {
@@ -27,13 +29,11 @@ func (s *Server) SignalWaiting(timeOut time.Duration) {
 	<-c
 	ctx, cancel := context.WithTimeout(context.Background(), timeOut)
 	defer cancel()
+
 	if err := s.Shutdown(ctx); err != nil {
 		log.Println("Server Shutdown:", err)
 	}
 	log.Println("shutting down")
 	os.Exit(0)
 }
-
-func (s *Server) Shutdown(ctx context.Context) error {
-	return s.app.Shutdown()
-}
+func (s *Server) Shutdown(ctx context.Context) error { return s.app.Shutdown() }

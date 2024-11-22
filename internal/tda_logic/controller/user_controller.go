@@ -36,6 +36,7 @@ func (uc *userController) GetUser(ctx context.Context, nickname, email string) (
 }
 func (uc *userController) InsertUser(ctx context.Context, User model.User) error {
 	var UserH model.UserHash
+
 	UserH.Email, UserH.Nickname = User.Email, User.Nickname
 	var pass []byte
 	pass, err := bcrypt.GenerateFromPassword([]byte(User.Password), bcrypt.DefaultCost)
