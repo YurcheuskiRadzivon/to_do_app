@@ -35,7 +35,7 @@ func loadConfig(filename string) (*DBConfig, error) {
 }
 
 func (cfg *DBConfig) ConnectionString() string {
-	return fmt.Sprintf("postgres://%s:%s@%s:%s/%s", cfg.User, cfg.Password, cfg.Host, cfg.Port, cfg.Name)
+	return fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", cfg.User, cfg.Password, cfg.Host, cfg.Port, cfg.Name)
 }
 func GetConfig(cfgPath string) (string, error) {
 	cfg, err := loadConfig(cfgPath)

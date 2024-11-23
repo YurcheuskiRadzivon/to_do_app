@@ -27,13 +27,19 @@ func (s *Server) SignalWaiting(timeOut time.Duration) {
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt)
 	<-c
+
 	ctx, cancel := context.WithTimeout(context.Background(), timeOut)
 	defer cancel()
 
 	if err := s.Shutdown(ctx); err != nil {
-		log.Println("Server Shutdown:", err)
+		log.Println("Server Shutdown error:", err)
+	} else {
+		log.Println("Server shutdown successfully.")
 	}
-	log.Println("shutting down")
+
 	os.Exit(0)
 }
-func (s *Server) Shutdown(ctx context.Context) error { return s.app.Shutdown() }
+
+func (s *Server) Shutdown(ctx context.Context) error {
+	return s.app.Shutdown()
+}

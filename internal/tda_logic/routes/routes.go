@@ -23,7 +23,7 @@ func NewFiberRouter(userHandler handler.UserHandler, taskHandler handler.TaskHan
 	app.Get("/register", func(c *fiber.Ctx) error {
 		return c.Render("register", nil)
 	})
-	app.Get("/test", taskHandler.GetTasks)
+	app.Get("/test", taskHandler.GetTask)
 	app.Get("/redirect", middleware.RedirectHandler)
 	app.Post("/login", userHandler.LoginUser)
 	app.Post("/register", userHandler.InsertUser)

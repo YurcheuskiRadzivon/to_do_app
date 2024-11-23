@@ -30,12 +30,13 @@ func (th *taskHandler) GetTasks(c *fiber.Ctx) error {
 	cookie := c.Cookies("tokenAuth")
 	tasks, err := th.controller.GetTasks(c.Context(), cookie)
 	if err != nil {
-		log.Println(err)
+		log.Println("11", err)
 		return err
 	}
 	return c.Render("tasks", tasks)
 }
 func (th *taskHandler) GetTask(c *fiber.Ctx) error {
+
 	return nil
 }
 func (th *taskHandler) InsertTask(c *fiber.Ctx) error {

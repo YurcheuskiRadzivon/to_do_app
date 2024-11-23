@@ -30,7 +30,6 @@ func GetUserId(tokenString string) (int, error) {
 	}
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 		userID := int(claims["sub_id"].(float64))
-		log.Println(userID)
 		return userID, nil
 	}
 	return 0, fmt.Errorf("invalid token")
