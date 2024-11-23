@@ -35,3 +35,31 @@ func GetUserId(tokenString string) (int, error) {
 	}
 	return 0, fmt.Errorf("invalid token")
 }
+func GetUserNickname(tokenString string) (string, error) {
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		return GetJwtSecretKey(), nil
+	})
+	if err != nil {
+		return "", err
+	}
+	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+		nickname := claims["name"].(string)
+		log.Println(nickname)
+		return nickname, nil
+	}
+	return "", fmt.Errorf("invalid token")
+}
+func GetEmailNickname(tokenString string) (string, error) {
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		return GetJwtSecretKey(), nil
+	})
+	if err != nil {
+		return "", err
+	}
+	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+		email := claims["name"].(string)
+		log.Println(email)
+		return email, nil
+	}
+	return "", fmt.Errorf("invalid token")
+}

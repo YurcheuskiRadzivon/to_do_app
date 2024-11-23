@@ -3,10 +3,8 @@ package handler
 import (
 	"context"
 	"github.com/YurcheuskiRadzivon/to_do_app/internal/tda_logic/controller"
-	"github.com/YurcheuskiRadzivon/to_do_app/internal/tda_logic/model"
 	"github.com/gofiber/fiber/v2"
 	"log"
-	"time"
 )
 
 type TaskHandler interface {
@@ -29,28 +27,13 @@ func NewTaskHandler(controller controller.TaskController) TaskHandler {
 
 }
 func (th *taskHandler) GetTasks(c *fiber.Ctx) error {
-	image1Base64 := "iVBORw0KGgoAAAANSUhEUgAA...AAAAABJRU5ErkJggg=="
-	image2Base64 := "iVBORw0KGgoAAAANSUhEUgAA...AAAAAElFTkSuQmCC"
-	task := model.Task{
-		Title:       "Sample Task",
-		Description: "This is a sample task",
-		Status:      true,
-		AddedTime:   time.Now(),
-		Images:      []string{image1Base64, image2Base64},
-	}
 	cookie := c.Cookies("tokenAuth")
-	err := th.controller.InsertTask(c.Context(), task, cookie)
+	tasks, err := th.controller.GetTasks(c.Context(), cookie)
 	if err != nil {
 		log.Println(err)
 		return err
 	}
-	tasks, err := th.controller.GetTasks(c.Context(), 9, cookie)
-	if err != nil {
-		log.Println(err)
-		return err
-	}
-	log.Println(tasks)
-	return nil
+	return c.Render("tasks", tasks)
 }
 func (th *taskHandler) GetTask(c *fiber.Ctx) error {
 	return nil

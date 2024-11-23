@@ -1,0 +1,3 @@
+for key, value := range claims {
+			log.Printf("%s: %v", key, value)
+		}

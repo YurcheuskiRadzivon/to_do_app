@@ -27,9 +27,7 @@ func NewFiberRouter(userHandler handler.UserHandler, taskHandler handler.TaskHan
 	app.Get("/redirect", middleware.RedirectHandler)
 	app.Post("/login", userHandler.LoginUser)
 	app.Post("/register", userHandler.InsertUser)
-	app.Get("/tasks", middleware.AuthMiddleware, func(c *fiber.Ctx) error {
-		return c.Render("tasks", nil)
-	})
+	app.Get("/tasks", middleware.AuthMiddleware, taskHandler.GetTasks)
 	filepath := filepath.Join("..", "..", "web", "static")
 	app.Static("/", filepath)
 	return app

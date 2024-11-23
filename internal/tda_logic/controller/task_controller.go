@@ -6,11 +6,10 @@ import (
 	"github.com/YurcheuskiRadzivon/to_do_app/internal/tda_logic/model"
 	"github.com/YurcheuskiRadzivon/to_do_app/internal/tda_logic/repository"
 	"github.com/YurcheuskiRadzivon/to_do_app/internal/tda_logic/utils/jwt_service"
-	"log"
 )
 
 type TaskController interface {
-	GetTasks(ctx context.Context, userId int, tokenString string) ([]model.Task, error)
+	GetTasks(ctx context.Context, tokenString string) ([]model.Task, error)
 	GetTask(ctx context.Context, id int) (*model.Task, error)
 	InsertTask(ctx context.Context, Task model.Task, tokenString string) error
 	UpdateTask(ctx context.Context, Task model.Task, tokenString string) error
@@ -23,14 +22,14 @@ type taskController struct {
 func NewTaskController(repo repository.TaskRepository) TaskController {
 	return &taskController{repo: repo}
 }
-func (tc *taskController) GetTasks(ctx context.Context, userId int, tokenString string) ([]model.Task, error) {
+
+func (tc *taskController) GetTasks(ctx context.Context, tokenString string) ([]model.Task, error) {
 	UserId, err := jwt_service.GetUserId(tokenString)
 	if err != nil {
 		return nil, err
 	}
 	TaskHList, err := tc.repo.GetTasks(UserId)
 	if err != nil {
-		log.Println(2)
 		return nil, err
 	}
 	var TaskList []model.Task
@@ -74,14 +73,6 @@ func (tc *taskController) GetTask(ctx context.Context, id int) (*model.Task, err
 	return Task, nil
 }
 func (tc *taskController) InsertTask(ctx context.Context, Task model.Task, tokenString string) error {
-	TaskH := model.TaskH{
-		ID:          Task.ID,
-		Title:       Task.Title,
-		Description: Task.Description,
-		Status:      Task.Status,
-		Images:      nil,
-		UserId:      0,
-	}
 	imagesJSON, err := json.Marshal(Task.Images)
 	if err != nil {
 		return err
@@ -90,23 +81,21 @@ func (tc *taskController) InsertTask(ctx context.Context, Task model.Task, token
 	if err != nil {
 		return err
 	}
-	TaskH.Images = imagesJSON
-	TaskH.UserId = UserId + 9
+	TaskH := model.TaskH{
+		ID:          Task.ID,
+		Title:       Task.Title,
+		Description: Task.Description,
+		Status:      Task.Status,
+		Images:      imagesJSON,
+		UserId:      UserId,
+	}
 	if err = tc.repo.InsertTask(TaskH); err != nil {
-		log.Println(1)
+
 		return err
 	}
 	return nil
 }
 func (tc *taskController) UpdateTask(ctx context.Context, Task model.Task, tokenString string) error {
-	TaskH := model.TaskH{
-		ID:          Task.ID,
-		Title:       Task.Title,
-		Description: Task.Description,
-		Status:      Task.Status,
-		Images:      nil,
-		UserId:      0,
-	}
 	imagesJSON, err := json.Marshal(Task.Images)
 	if err != nil {
 		return err
@@ -115,8 +104,14 @@ func (tc *taskController) UpdateTask(ctx context.Context, Task model.Task, token
 	if err != nil {
 		return err
 	}
-	TaskH.Images = imagesJSON
-	TaskH.UserId = UserId
+	TaskH := model.TaskH{
+		ID:          Task.ID,
+		Title:       Task.Title,
+		Description: Task.Description,
+		Status:      Task.Status,
+		Images:      imagesJSON,
+		UserId:      UserId,
+	}
 	if err = tc.repo.UpdateTask(TaskH); err != nil {
 		return err
 	}

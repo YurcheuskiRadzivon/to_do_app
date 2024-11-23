@@ -66,10 +66,9 @@ func (tr *taskRepository) GetTask(id int) (*model.TaskH, error) {
 	return &TaskH, nil
 }
 func (tr *taskRepository) InsertTask(TaskH model.TaskH) error {
-	query := `INSERT INTO "Task" (title, description, status, added_time, images, user_id) VALUES ($1, $2, $3, $4, $5, $6);`
-	_, err := tr.db.Exec(context.Background(), query, TaskH.Title, TaskH.Description, TaskH.Status, TaskH.AddedTime, TaskH.Images, TaskH.UserId)
+	query := `INSERT INTO "Task" (title, description, status, added_time, images, user_id) VALUES ($1, $2, $3, NOW(), $4, $5);`
+	_, err := tr.db.Exec(context.Background(), query, TaskH.Title, TaskH.Description, TaskH.Status, TaskH.Images, TaskH.UserId)
 	if err != nil {
-		log.Println(TaskH.UserId)
 		return err
 	}
 	return nil

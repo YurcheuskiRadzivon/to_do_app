@@ -100,12 +100,12 @@ func (uc *userController) LoginUser(ctx context.Context, User *model.User) (stri
 
 		"email":  User.Email,
 		"name":   User.Nickname,
-		"sub_id": User.ID,
+		"sub_id": U.ID,
 		"exp":    time.Now().Add(time.Hour * 72).Unix(),
 	}
 	t, err := jwt_service.CreateToken(payload)
 	if err != nil {
-		return "", fmt.Errorf("4%s", err)
+		return "", fmt.Errorf("%s", err)
 	}
 	return t, nil
 
