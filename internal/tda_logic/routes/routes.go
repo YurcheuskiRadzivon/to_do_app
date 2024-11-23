@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 )
 
-func NewFiberRouter(userHandler handler.UserHandler) *fiber.App {
+func NewFiberRouter(userHandler handler.UserHandler, taskHandler handler.TaskHandler) *fiber.App {
 	htmlengine := html.New("../../web/templates", ".html")
 	app := fiber.New(fiber.Config{
 		Views: htmlengine,
@@ -23,6 +23,7 @@ func NewFiberRouter(userHandler handler.UserHandler) *fiber.App {
 	app.Get("/register", func(c *fiber.Ctx) error {
 		return c.Render("register", nil)
 	})
+	app.Get("/test", taskHandler.GetTasks)
 	app.Get("/redirect", middleware.RedirectHandler)
 	app.Post("/login", userHandler.LoginUser)
 	app.Post("/register", userHandler.InsertUser)

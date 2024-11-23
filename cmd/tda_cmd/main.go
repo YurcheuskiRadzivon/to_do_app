@@ -22,10 +22,11 @@ func main() {
 	}
 
 	userHandler, err := initia.InitializeComponentsUser(dsnStr)
+	taskHandler, err := initia.InitializeComponentsTask(dsnStr)
 	if err != nil {
 		log.Fatalf("Error: %v", err)
 	}
-	app := routes.NewFiberRouter(userHandler)
+	app := routes.NewFiberRouter(userHandler, taskHandler)
 	srv := server.NewServer(app)
 
 	go func() {

@@ -18,3 +18,12 @@ func InitializeComponentsUser(dsnStr string) (handler.UserHandler, error) {
 	userHandler := handler.NewUserHandler(userController)
 	return userHandler, nil
 }
+func InitializeComponentsTask(dsnStr string) (handler.TaskHandler, error) {
+	taskRepo, err := repository.NewTaskRepository(dsnStr)
+	if err != nil {
+		return nil, errors.New(fmt.Sprintf("Error DB connection: %v", err))
+	}
+	taskController := controller.NewTaskController(taskRepo)
+	taskHandler := handler.NewTaskHandler(taskController)
+	return taskHandler, nil
+}
