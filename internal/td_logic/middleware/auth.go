@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"github.com/YurcheuskiRadzivon/to_do_app/internal/tda_logic/utils/jwt_service"
+	"github.com/YurcheuskiRadzivon/to_do_app/internal/td_logic/utils/jwt_service"
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt"
 )

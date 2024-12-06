@@ -3,8 +3,8 @@ package handler
 import (
 	"context"
 	"fmt"
-	"github.com/YurcheuskiRadzivon/to_do_app/internal/tda_logic/controller"
-	"github.com/YurcheuskiRadzivon/to_do_app/internal/tda_logic/model"
+	"github.com/YurcheuskiRadzivon/to_do_app/internal/td_logic/controller"
+	"github.com/YurcheuskiRadzivon/to_do_app/internal/td_logic/model"
 
 	"github.com/gofiber/fiber/v2"
 )

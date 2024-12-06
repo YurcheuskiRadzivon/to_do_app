@@ -3,9 +3,9 @@ package controller
 import (
 	"context"
 	"fmt"
-	"github.com/YurcheuskiRadzivon/to_do_app/internal/tda_logic/model"
-	"github.com/YurcheuskiRadzivon/to_do_app/internal/tda_logic/repository"
-	"github.com/YurcheuskiRadzivon/to_do_app/internal/tda_logic/utils/jwt_service"
+	"github.com/YurcheuskiRadzivon/to_do_app/internal/td_logic/model"
+	"github.com/YurcheuskiRadzivon/to_do_app/internal/td_logic/repository"
+	"github.com/YurcheuskiRadzivon/to_do_app/internal/td_logic/utils/jwt_service"
 	"time"
 
 	"github.com/golang-jwt/jwt"

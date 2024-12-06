@@ -3,7 +3,7 @@ package repository
 import (
 	"context"
 	"fmt"
-	"github.com/YurcheuskiRadzivon/to_do_app/internal/tda_logic/model"
+	"github.com/YurcheuskiRadzivon/to_do_app/internal/td_logic/model"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"log"
 )

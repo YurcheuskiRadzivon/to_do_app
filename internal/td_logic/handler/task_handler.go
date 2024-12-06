@@ -2,7 +2,7 @@ package handler
 
 import (
 	"context"
-	"github.com/YurcheuskiRadzivon/to_do_app/internal/tda_logic/controller"
+	"github.com/YurcheuskiRadzivon/to_do_app/internal/td_logic/controller"
 	"github.com/gofiber/fiber/v2"
 	"log"
 )

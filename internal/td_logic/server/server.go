@@ -2,8 +2,9 @@ package server
 
 import (
 	"context"
+	"fmt"
+	"github.com/YurcheuskiRadzivon/online_music_library/pkg/logger"
 	"github.com/gofiber/fiber/v2"
-	"log"
 	"os"
 	"os/signal"
 	"time"
@@ -19,11 +20,14 @@ func NewServer(app *fiber.App) *Server {
 
 func (s *Server) Run() {
 	if err := s.app.Listen(":8080"); err != nil {
-		log.Fatalf("Error starting server: %v", err)
+		if err != nil {
+			panic(fmt.Errorf("Starting server has failed: %s\n", err))
+		}
+
 	}
 }
 
-func (s *Server) SignalWaiting(timeOut time.Duration) {
+func (s *Server) SignalWaiting(timeOut time.Duration, lgr *logger.Logger) {
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt)
 	<-c
@@ -32,9 +36,10 @@ func (s *Server) SignalWaiting(timeOut time.Duration) {
 	defer cancel()
 
 	if err := s.Shutdown(ctx); err != nil {
-		log.Println("Server Shutdown error:", err)
+		panic(fmt.Errorf("Server Shutdown has failed: %s\n", err))
+
 	} else {
-		log.Println("Server shutdown successfully.")
+		lgr.InfoLogger.Println("Server shutdown successfully.")
 	}
 
 	os.Exit(0)

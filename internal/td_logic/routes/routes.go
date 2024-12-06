@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"github.com/YurcheuskiRadzivon/to_do_app/internal/tda_logic/handler"
-	"github.com/YurcheuskiRadzivon/to_do_app/internal/tda_logic/middleware"
+	"github.com/YurcheuskiRadzivon/to_do_app/internal/td_logic/handler"
+	"github.com/YurcheuskiRadzivon/to_do_app/internal/td_logic/middleware"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/template/html/v2"
 	"path/filepath"
