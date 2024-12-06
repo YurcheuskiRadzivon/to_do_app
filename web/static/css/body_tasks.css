@@ -1,0 +1,398 @@
+/*@media (min-width: 1290px) {*/
+main {
+    margin-top: 20px;
+    height: 87vh;
+    width: 100vw;
+    display: flex;
+}
+
+/*scroll system*/
+#element_x {
+    overflow-y: scroll;
+    background-color: rgba(255, 255, 255, 0);
+    width: 70vw;
+    height: 78vh;
+}
+
+#element_x::-webkit-scrollbar {
+    width: 0;
+}
+
+.overflow {
+
+    margin-right: 15px;
+    margin-left: 75px;
+    margin-top: 15px;
+}
+
+
+/*left form*/
+.card {
+    margin: 10px 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 55vw;
+    padding: 36px;
+    border-radius: 24px;
+    overflow: hidden;
+    line-height: 4;
+    border: 1px;
+    transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+    color: #000000;
+    transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.content .heading {
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 1.3;
+    z-index: 1;
+    transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.content .para {
+    z-index: 1;
+    opacity: 0.8;
+    font-size: 18px;
+    transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.card::before {
+    content: "";
+    position: absolute;
+    right: -5.2rem;
+    top: -5.2rem;
+    width: 20.9rem;
+    height: 15.4rem;
+    background: #0a3cff;
+    z-index: 0;
+    opacity: 0;
+    border-radius: 50%;
+    transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.card::after {
+    content: "";
+    position: absolute;
+    left: -5.2rem;
+    bottom: -5.2rem;
+    width: 10.4rem;
+    height: 10.4rem;
+    background: #0a3cff;
+    z-index: 0;
+    opacity: 0;
+    border-radius: 50%;
+    transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.card:hover::before {
+    scale: 7;
+    opacity: 1;
+}
+
+.card:hover::after {
+    scale: 7;
+    opacity: 1;
+}
+
+.card:hover .content .heading {
+    color: #ffffff;
+}
+
+.card:hover .content .para {
+    color: #ffffff;
+}
+
+.card:hover {
+    box-shadow: 0rem 6px 13px rgba(0, 0, 0, 0.1),
+    0rem 24px 24px rgba(0, 0, 0, 0.09), 0rem 55px 33px rgba(0, 0, 0, 0.05),
+    0rem 97px 39px rgba(0, 0, 0, 0.01), 0rem 152px 43px rgba(0, 0, 0, 0);
+    border-color: #0a3cff;
+    scale: 1.05;
+}
+
+/*right form*/
+#element_y {
+    width: 25vw;
+    height: 100vh;
+}
+
+card-setting-small {
+    display: none;
+}
+
+.card_settings {
+
+    margin-right: 50px;
+    margin-left: 15px;
+
+    margin-top: 15px;
+    width: 15vw;
+    background-color: rgb(10, 60, 255);
+    background-image: linear-gradient(
+            139deg,
+            rgb(36, 52, 67) 0%,
+            rgba(36, 40, 50, 1) 0%,
+            rgba(37, 28, 40, 1) 100%
+    );
+    font-family: "Inter", sans-serif;
+    user-select: none;
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.card_settings .list .element label input[type="radio"] {
+    display: none;
+}
+
+.card_settings .separator {
+    border-top: 1.5px solid #42434a;
+}
+
+.card_settings .list {
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 0px;
+}
+
+.card_settings input {
+    display: none;
+}
+
+.card_settings .list .element > label {
+    display: flex;
+    align-items: center;
+    color: #7e8590;
+    gap: 10px;
+    transition: all 0.3s ease-out;
+    padding: 6px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.card_settings .list .element label svg {
+    width: 19px;
+    height: 19px;
+    transition: all 0.3s ease-out;
+}
+
+.card_settings .list .element label:has(input[type="radio"]:checked),
+.card_settings .list .element label:hover {
+    background-color: var(--color);
+    color: var(--hover-color);
+}
+
+.card_settings .list .element label:active {
+    transform: scale(0.96);
+}
+
+.card_settings .list .element label:has(input[type="radio"]:checked) svg,
+.card_settings .list .element label:hover svg {
+    stroke: var(--hover-storke);
+}
+
+
+@media (max-width: 1290px) {
+    main {
+        margin-top: 20px;
+        height: 87vh;
+        width: 100vw;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .element span {
+        display: none;
+    }
+
+    /*scroll system*/
+    #element_x {
+        overflow-y: scroll;
+        background-color: rgba(255, 255, 255, 0);
+        width: 100vw;
+        height: 65vh;
+    }
+
+    .card_settings .list {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        width: 100vw;
+        height: 60px;
+    }
+
+    .card_settings {
+        position: fixed;
+        bottom: 0;
+        margin: 0;
+        width: 100vw;
+        padding: 10px;
+        display: flex;
+        /* flex-direction: column; */
+        gap: 8px;
+    }
+
+
+    #element_x::-webkit-scrollbar {
+        width: 0;
+    }
+
+    .overflow {
+
+        margin-right: 15px;
+        margin-left: 75px;
+        margin-top: 15px;
+    }
+
+
+    /*left form*/
+    .card {
+        margin: 10px 0;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 70vw;
+        padding: 17px;
+        border-radius: 24px;
+        overflow: hidden;
+        line-height: 4;
+        border: 1px;
+        transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 24px;
+        color: #000000;
+        transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .content .heading {
+        font-weight: 700;
+        font-size: 36px;
+        line-height: 1.3;
+        z-index: 1;
+        transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .content .para {
+        z-index: 1;
+        opacity: 0.8;
+        font-size: 18px;
+        transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .card::before {
+        content: "";
+        position: absolute;
+        right: -5.2rem;
+        top: -5.2rem;
+        width: 20.9rem;
+        height: 15.4rem;
+        background: #0a3cff;
+        z-index: 0;
+        opacity: 0;
+        border-radius: 50%;
+        transition: all 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .card::after {
+        content: "";
+        position: absolute;
+        left: -5.2rem;
+        bottom: -5.2rem;
+        width: 10.4rem;
+        height: 10.4rem;
+        background: #0a3cff;
+        z-index: 0;
+        opacity: 0;
+        border-radius: 50%;
+        transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .card:hover::before {
+        scale: 7;
+        opacity: 1;
+    }
+
+    .card:hover::after {
+        scale: 7;
+        opacity: 1;
+    }
+
+    .card:hover .content .heading {
+        color: #ffffff;
+    }
+
+    .card:hover .content .para {
+        color: #ffffff;
+    }
+
+    .card:hover {
+        box-shadow: 0rem 6px 13px rgba(0, 0, 0, 0.1),
+        0rem 24px 24px rgba(0, 0, 0, 0.09), 0rem 55px 33px rgba(0, 0, 0, 0.05),
+        0rem 97px 39px rgba(0, 0, 0, 0.01), 0rem 152px 43px rgba(0, 0, 0, 0);
+        border-color: #0a3cff;
+        scale: 1.05;
+    }
+
+    /*right form*/
+    #element_y {
+        height: 24vw;
+        width: 100vw;
+        height: auto;
+    }
+
+
+    .element {
+        margin: 0 10px;
+    }
+
+    .list {
+        justify-content: center;
+        align-items: center;
+    }
+
+
+    .card-setting-small .list .element label svg {
+        width: 30px;
+        height: 30px;
+        transition: all 0.3s ease-out;
+    }
+
+    .card-setting-small .list .element label:has(input[type="button"]:checked),
+    .card-setting-small .list .element label:hover {
+
+        background-color: var(--color);
+        color: var(--hover-color);
+    }
+
+    .card-setting-small .list .element label:active {
+        transform: scale(0.96);
+    }
+
+    .card-setting-small .list .element label:has(input[type="button"]:checked) svg,
+    .card-setting-small .list .element label:hover svg {
+        stroke: var(--hover-storke);
+    }
+}
+
+

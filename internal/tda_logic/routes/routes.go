@@ -9,7 +9,7 @@ import (
 )
 
 func NewFiberRouter(userHandler handler.UserHandler, taskHandler handler.TaskHandler) *fiber.App {
-	htmlengine := html.New("../../web/templates", ".html")
+	htmlengine := html.New("web/templates", ".html")
 	app := fiber.New(fiber.Config{
 		Views: htmlengine,
 	})
@@ -28,7 +28,7 @@ func NewFiberRouter(userHandler handler.UserHandler, taskHandler handler.TaskHan
 	app.Post("/login", userHandler.LoginUser)
 	app.Post("/register", userHandler.InsertUser)
 	app.Get("/tasks", middleware.AuthMiddleware, taskHandler.GetTasks)
-	filepath := filepath.Join("..", "..", "web", "static")
+	filepath := filepath.Join("web", "static")
 	app.Static("/", filepath)
 	return app
 }

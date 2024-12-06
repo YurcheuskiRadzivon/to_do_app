@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Tasks</title>
     <link rel="stylesheet" href="/css/header_tasks.css"/>
+    <link rel="stylesheet" href="/css/body_tasks.css"/>
 
     <link rel="shortcut icon" href="/img/logo2.png"/>
 
@@ -22,7 +23,8 @@
         <div class="header__inner">
             <div class="left-part__tasks">
                 <div class="logo">
-                    <img class="logo__img" src="/img/logo2.png" alt=""/>
+                    <img class="logo__img"
+                         src="/img/logo2.png" alt=""/>
                     <span class="header__name">ToDoApp</span>
                 </div>
 
@@ -104,7 +106,7 @@
     </div>
 </header>
 <main>
-    <div id="element">
+    <div id="element_x">
         <div class="overflow">
             {{range .}}
             <div class="card">
@@ -119,6 +121,157 @@
 
 
         </div>
+    </div>
+
+    <div id="element_y">
+        <div class="card_settings">
+            <ul
+                    class="list"
+                    style="--color:#5353ff;--hover-storke:#fff; --hover-color:#fff"
+            >
+                <li class="element">
+                    <label for="create">
+                        <input type="button" id="create" name="filed" checked=""/>
+                        <svg
+                                class="lucide lucide-pencil"
+                                stroke-linejoin="round"
+                                stroke-linecap="round"
+                                stroke-width="2"
+                                stroke="#7e8590"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                height="25"
+                                width="25"
+                                xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path
+                                    d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"
+                            ></path>
+                            <path d="m15 5 4 4"></path>
+                        </svg>
+                        <span>
+                           Create task
+                       </span> </label
+                    >
+                </li>
+                <li class="element" style="--color:#5353ff">
+                    <label class="label" for="export">
+                        <input type="button" id="export" name="filed"/>
+                        <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="#7e8590"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="lucide lucide-user-round-plus"
+                        >
+                            <path d="M12 13v8l-4-4"></path>
+                            <path d="m12 21 4-4"></path>
+                            <path
+                                    d="M4.393 15.269A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.436 8.284"
+                            ></path>
+                        </svg>
+                        <span>
+                            Export
+                        </span></label
+                    >
+                </li>
+
+                <div class="separator"></div>
+                <li
+                        class="element"
+                        style="--color:rgba(56, 45, 71, 0.836);--hover-storke:#bd89ff;--hover-color:#bd89ff"
+                >
+                    <label for="sortbyname">
+                        <input type="button" id="sortbyname" name="filed"/>
+
+                        <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="#7e8590"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="lucide lucide-users-round"
+                        >
+                            <path stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" stroke="#707277"
+                                  d="M5 6C5 4.58579 5 3.87868 5.43934 3.43934C5.87868 3 6.58579 3 8 3H12.5789C15.0206 3 17 5.01472 17 7.5C17 9.98528 15.0206 12 12.5789 12H5V6Z"
+                                  clip-rule="evenodd" fill-rule="evenodd"></path>
+                            <path stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" stroke="#707277"
+                                  d="M12.4286 12H13.6667C16.0599 12 18 14.0147 18 16.5C18 18.9853 16.0599 21 13.6667 21H8C6.58579 21 5.87868 21 5.43934 20.5607C5 20.1213 5 19.4142 5 18V12"></path>
+                        </svg>
+                        <span>Sort by name</span></label
+                    >
+                </li>
+                <li
+                        class="element"
+                        style="--color:rgba(56, 45, 71, 0.836);--hover-storke:#bd89ff;--hover-color:#bd89ff"
+                >
+                    <label for="sortbydate">
+                        <input type="button" id="sortbydate" name="filed"/>
+
+                        <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="#7e8590"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="lucide lucide-users-round"
+                        >
+                            <path d="m3 16 4 4 4-4"></path>
+                            <path d="M7 20V4"></path>
+                            <path d="m21 8-4-4-4 4"></path>
+                            <path d="M17 4v16"></path>
+                        </svg>
+                        <span>
+                            Sort by date
+                        </span> </label
+                    >
+                </li>
+                <li
+                        class="element"
+                        style="--color:rgba(56, 45, 71, 0.836);--hover-storke:#bd89ff;--hover-color:#bd89ff"
+                >
+                    <label for="sortbystatus">
+                        <input type="button" id="sortbystatus" name="filed"/>
+
+                        <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="#7e8590"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="lucide lucide-users-round"
+                        >
+                            <path d="M18 21a8 8 0 0 0-16 0"></path>
+                            <circle cx="10" cy="8" r="5"></circle>
+                            <path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3"></path>
+                        </svg>
+                        <span>
+                            Sort by status
+                        </span> </label
+                    >
+                </li>
+            </ul>
+
+        </div>
+
+
     </div>
 </main>
 

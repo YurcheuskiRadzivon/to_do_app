@@ -11,14 +11,14 @@ import (
 )
 
 func main() {
-	cfgPath := filepath.Join("..", "..", "internal", "config", "config.yaml")
-	srcURL := "file://..//..//internal//dba_logic//migrations"
+	cfgPath := filepath.Join("internal", "config", "config.yaml")
+	srcURL := "file://internal//dba_logic//migrations"
 	dbURL, err := config.GetConfig(cfgPath)
 	m, err := migrate.New(srcURL, dbURL)
 	if err != nil {
 		log.Fatal(1, err)
 	}
-	if err := m.Up(); err != nil {
+	if err := m.Up(); err != nil && err != migrate.ErrNoChange {
 		log.Fatal(2, err)
 	}
 

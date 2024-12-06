@@ -15,13 +15,16 @@ func main() {
 	/*flag.DurationVar(&wait, "timeout", time.Second*15, "the duration for which the server gracefully wait for existing connections to finish - e.g. 15s or 1m")
 	flag.Parse()
 	fmt.Println("Graceful timeout:", wait)*/
-	cfgPath := filepath.Join("..", "..", "internal", "config", "config.yaml")
+	cfgPath := filepath.Join("internal", "config", "config.yaml")
 	dsnStr, err := config.GetConfig(cfgPath)
 	if err != nil {
 		log.Fatalf("Could not load config: %v", err)
 	}
 
 	userHandler, err := initia.InitializeComponentsUser(dsnStr)
+	if err != nil {
+		log.Fatalf("Error: %v", err)
+	}
 	taskHandler, err := initia.InitializeComponentsTask(dsnStr)
 	if err != nil {
 		log.Fatalf("Error: %v", err)
