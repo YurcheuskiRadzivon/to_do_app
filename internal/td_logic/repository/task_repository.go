@@ -3,9 +3,9 @@ package repository
 import (
 	"context"
 	"fmt"
+	"github.com/YurcheuskiRadzivon/online_music_library/pkg/logger"
 	"github.com/YurcheuskiRadzivon/to_do_app/internal/td_logic/model"
 	"github.com/jackc/pgx/v4/pgxpool"
-	"log"
 )
 
 type TaskRepository interface {
@@ -17,25 +17,31 @@ type TaskRepository interface {
 }
 
 type taskRepository struct {
-	db *pgxpool.Pool
+	db  *pgxpool.Pool
+	lgr *logger.Logger
 }
 
-func NewTaskRepository(dsnStr string) (TaskRepository, error) {
+func NewTaskRepository(dsnStr string, lgr *logger.Logger) (TaskRepository, error) {
 	dsn := fmt.Sprintf(dsnStr)
 	db, err := pgxpool.Connect(context.Background(), dsn)
 	if err != nil {
-		log.Fatalf("Unable to connect to the database: %v", err)
+		lgr.ErrorLogger.Println("Failed to connect to the database:", err)
 		return nil, err
 	}
-	return &taskRepository{db: db}, nil
+	lgr.InfoLogger.Println("SongRepository created successfully.")
+	return &taskRepository{
+		db:  db,
+		lgr: lgr,
+	}, nil
 }
 
 func (tr *taskRepository) GetTasks(userId int) ([]model.TaskH, error) {
+	tr.lgr.DebugLogger.Printf("Getting all tasks from the database with userId: %v ...", userId)
 	var tasks []model.TaskH
-
 	query := `SELECT id, title, description, status, added_time, images, user_id FROM "Task" WHERE user_id=$1`
 	rows, err := tr.db.Query(context.Background(), query, userId)
 	if err != nil {
+		tr.lgr.ErrorLogger.Println("Error querying tasks:", err)
 		return nil, err
 	}
 	defer rows.Close()
@@ -44,15 +50,18 @@ func (tr *taskRepository) GetTasks(userId int) ([]model.TaskH, error) {
 		var task model.TaskH
 		err := rows.Scan(&task.ID, &task.Title, &task.Description, &task.Status, &task.AddedTime, &task.Images, &task.UserId)
 		if err != nil {
+			tr.lgr.ErrorLogger.Println("Error scanning task row:", err)
 			return nil, err
 		}
 		tasks = append(tasks, task)
 	}
 
 	if rows.Err() != nil {
+
+		tr.lgr.ErrorLogger.Println("Row iteration error:", rows.Err())
 		return nil, rows.Err()
 	}
-
+	tr.lgr.InfoLogger.Printf("Retrieved %d tasks from the database with user ID %v  \n", len(tasks), userId)
 	return tasks, nil
 }
 
@@ -63,14 +72,17 @@ func (tr *taskRepository) GetTask(id int) (*model.TaskH, error) {
 	if err != nil {
 		return nil, err
 	}
+	tr.lgr.InfoLogger.Printf("Retrieved task with ID %d.\n", id)
 	return &TaskH, nil
 }
 func (tr *taskRepository) InsertTask(TaskH model.TaskH) error {
+
 	query := `INSERT INTO "Task" (title, description, status, added_time, images, user_id) VALUES ($1, $2, $3, NOW(), $4, $5);`
 	_, err := tr.db.Exec(context.Background(), query, TaskH.Title, TaskH.Description, TaskH.Status, TaskH.Images, TaskH.UserId)
 	if err != nil {
 		return err
 	}
+
 	return nil
 }
 func (tr *taskRepository) UpdateTask(TaskH model.TaskH) error {
@@ -82,9 +94,11 @@ func (tr *taskRepository) UpdateTask(TaskH model.TaskH) error {
 	return nil
 }
 func (tr *taskRepository) DeleteTask(id int) error {
+	tr.lgr.DebugLogger.Printf("Deleting song with ID %d from the database.\n", id)
 	query := `DELETE FROM "Task" WHERE id=$1`
 	_, err := tr.db.Exec(context.Background(), query, id)
 	if err != nil {
+
 		return err
 	}
 	return nil

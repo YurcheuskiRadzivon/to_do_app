@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"fmt"
+	"github.com/YurcheuskiRadzivon/online_music_library/pkg/logger"
 	"github.com/YurcheuskiRadzivon/to_do_app/internal/td_logic/model"
 	"log"
 
@@ -18,17 +19,20 @@ type UserRepository interface {
 }
 
 type userRepository struct {
-	db *pgxpool.Pool
+	db  *pgxpool.Pool
+	lgr *logger.Logger
 }
 
-func NewUserRepository(dsnStr string) (UserRepository, error) {
+func NewUserRepository(dsnStr string, lgr *logger.Logger) (UserRepository, error) {
 	dsn := fmt.Sprintf(dsnStr)
 	db, err := pgxpool.Connect(context.Background(), dsn)
 	if err != nil {
 		log.Fatalf("Unable to connect to the database: %v", err)
 		return nil, err
 	}
-	return &userRepository{db: db}, nil
+	return &userRepository{
+		db:  db,
+		lgr: lgr}, nil
 }
 func (ur *userRepository) GetUser(nickname, email string) (*model.User, error) {
 	var User model.User

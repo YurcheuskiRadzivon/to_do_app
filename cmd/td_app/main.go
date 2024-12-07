@@ -30,12 +30,12 @@ func main() {
 		panic(fmt.Errorf("Getting config has failed: %s\n", err))
 	}
 	lgr.InfoLogger.Println("Getting config has successfully")
-	userHandler, err := initia.InitializeComponentsUser(dsnStr)
+	userHandler, err := initia.InitializeComponentsUser(dsnStr, lgr)
 	if err != nil {
 		panic(fmt.Errorf("Initialization user components has failed: %s\n", err))
 	}
 	lgr.InfoLogger.Println("Initialization user components components for router has successfully")
-	taskHandler, err := initia.InitializeComponentsTask(dsnStr)
+	taskHandler, err := initia.InitializeComponentsTask(dsnStr, lgr)
 	if err != nil {
 		panic(fmt.Errorf("Initialization task components has failed: %s\n", err))
 	}

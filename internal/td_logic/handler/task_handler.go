@@ -2,9 +2,9 @@ package handler
 
 import (
 	"context"
+	"github.com/YurcheuskiRadzivon/online_music_library/pkg/logger"
 	"github.com/YurcheuskiRadzivon/to_do_app/internal/td_logic/controller"
 	"github.com/gofiber/fiber/v2"
-	"log"
 )
 
 type TaskHandler interface {
@@ -17,12 +17,14 @@ type TaskHandler interface {
 type taskHandler struct {
 	ctx        context.Context
 	controller controller.TaskController
+	lgr        *logger.Logger
 }
 
-func NewTaskHandler(controller controller.TaskController) TaskHandler {
+func NewTaskHandler(controller controller.TaskController, lgr *logger.Logger) TaskHandler {
 	return &taskHandler{
 		controller: controller,
 		ctx:        context.Background(),
+		lgr:        lgr,
 	}
 
 }
@@ -30,8 +32,9 @@ func (th *taskHandler) GetTasks(c *fiber.Ctx) error {
 	cookie := c.Cookies("tokenAuth")
 	tasks, err := th.controller.GetTasks(c.Context(), cookie)
 	if err != nil {
-		log.Println("11", err)
-		return err
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
 	}
 	return c.Render("tasks", tasks)
 }

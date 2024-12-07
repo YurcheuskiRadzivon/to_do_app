@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"fmt"
+	"github.com/YurcheuskiRadzivon/online_music_library/pkg/logger"
 	"github.com/YurcheuskiRadzivon/to_do_app/internal/td_logic/controller"
 	"github.com/YurcheuskiRadzivon/to_do_app/internal/td_logic/model"
 
@@ -20,9 +21,10 @@ type UserHandler interface {
 type userHandler struct {
 	ctx        context.Context
 	controller controller.UserController
+	lgr        *logger.Logger
 }
 
-func NewUserHandler(controller controller.UserController) UserHandler {
+func NewUserHandler(controller controller.UserController, lgr *logger.Logger) UserHandler {
 	return &userHandler{
 		controller: controller,
 		ctx:        context.Background(),

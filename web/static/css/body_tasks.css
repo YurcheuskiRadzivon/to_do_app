@@ -413,7 +413,7 @@ card-setting-small {
         overflow-y: scroll;
         background-color: rgba(255, 255, 255, 0);
         width: 120vw;
-        height: 90vh;
+        height: 84vh;
     }
 
     .card_settings .list {
