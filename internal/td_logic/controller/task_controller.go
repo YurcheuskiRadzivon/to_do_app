@@ -8,10 +8,12 @@ import (
 	"github.com/YurcheuskiRadzivon/to_do_app/internal/td_logic/model"
 	"github.com/YurcheuskiRadzivon/to_do_app/internal/td_logic/repository"
 	"github.com/YurcheuskiRadzivon/to_do_app/internal/td_logic/utils/jwt_service"
+	"sort"
+	"strings"
 )
 
 type TaskController interface {
-	GetTasks(ctx context.Context, tokenString string) ([]model.Task, error)
+	GetTasks(ctx context.Context, tokenString string, sortParam string) ([]model.Task, error)
 	GetTask(ctx context.Context, id int) (*model.Task, error)
 	InsertTask(ctx context.Context, Task model.Task, tokenString string) error
 	UpdateTask(ctx context.Context, Task model.Task, tokenString string) error
@@ -30,8 +32,8 @@ func NewTaskController(repo repository.TaskRepository, lgr *logger.Logger) TaskC
 	}
 }
 
-func (tc *taskController) GetTasks(ctx context.Context, tokenString string) ([]model.Task, error) {
-
+func (tc *taskController) GetTasks(ctx context.Context, tokenString string, sortParam string) ([]model.Task, error) {
+	tc.lgr.DebugLogger.Printf("GetTasks called with sortParam: %s\n", sortParam)
 	UserId, err := jwt_service.GetUserId(tokenString)
 	if err != nil {
 		tc.lgr.ErrorLogger.Printf("Failed to get user ID from token: %v\n", err)
@@ -41,7 +43,7 @@ func (tc *taskController) GetTasks(ctx context.Context, tokenString string) ([]m
 	if err != nil {
 		return nil, fmt.Errorf("failed to retrieve tasks: %v", err)
 	}
-	var TaskList []model.Task
+	var taskList []model.Task
 	for _, value := range TaskHList {
 		var images []string
 		err = json.Unmarshal([]byte(value.Images), &images)
@@ -57,10 +59,34 @@ func (tc *taskController) GetTasks(ctx context.Context, tokenString string) ([]m
 			AddedTime:   value.AddedTime,
 			Images:      images,
 		}
-		TaskList = append(TaskList, Task)
+		taskList = append(taskList, Task)
 	}
-
-	return TaskList, nil
+	allowedSorts := map[string]bool{
+		"status": true,
+		"name":   true,
+		"date":   true,
+	}
+	if !allowedSorts[sortParam] {
+		sortParam = "date"
+		tc.lgr.DebugLogger.Printf("Invalid sort parameter: %s, defaulting to date\n", sortParam)
+	}
+	tc.lgr.DebugLogger.Printf("Sorting tasks by %s\n", sortParam)
+	switch sortParam {
+	case "date":
+		sort.Slice(taskList, func(i, j int) bool {
+			return taskList[i].ID < taskList[j].ID
+		})
+	case "status":
+		sort.Slice(taskList, func(i, j int) bool {
+			return taskList[i].Status == false && taskList[j].Status == true
+		})
+	case "name":
+		sort.Slice(taskList, func(i, j int) bool {
+			return strings.ToLower(taskList[i].Title) < strings.ToLower(taskList[j].Title)
+		})
+	}
+	tc.lgr.DebugLogger.Printf("Sorting tasks by %s\n", sortParam)
+	return taskList, nil
 }
 
 func (tc *taskController) GetTask(ctx context.Context, id int) (*model.Task, error) {
@@ -84,7 +110,7 @@ func (tc *taskController) GetTask(ctx context.Context, id int) (*model.Task, err
 		AddedTime:   TaskH.AddedTime,
 		Images:      images,
 	}
-	tc.lgr.InfoLogger.Printf("Retrieved task with ID %d\n", id)
+
 	return Task, nil
 }
 

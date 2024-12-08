@@ -30,12 +30,16 @@ func NewTaskHandler(controller controller.TaskController, lgr *logger.Logger) Ta
 }
 func (th *taskHandler) GetTasks(c *fiber.Ctx) error {
 	cookie := c.Cookies("tokenAuth")
-	tasks, err := th.controller.GetTasks(c.Context(), cookie)
+
+	sortParam := c.Query("sort", "date")
+
+	tasks, err := th.controller.GetTasks(c.Context(), cookie, sortParam)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": err.Error(),
 		})
 	}
+
 	return c.Render("tasks", tasks)
 }
 func (th *taskHandler) GetTask(c *fiber.Ctx) error {
