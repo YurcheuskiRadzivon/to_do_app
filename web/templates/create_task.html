@@ -1,0 +1,65 @@
+<html>
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/create_task.css">
+    <title>Create Task</title>
+
+</head>
+<body>
+<header>
+    <div class="logo-section">
+        <img src="/img/logo2.png" alt="Logo">
+        <h1>ToDoApp</h1>
+    </div>
+    <button class="menu-btn">☰</button>
+</header>
+
+<div class="sidebar">
+    <div class="sidebar-buttons">
+        <a href="/user" class="sidebar-btn">Account</a>
+        <a href="/tasks" class="sidebar-btn">Home</a>
+        <a href="/export" class="sidebar-btn">Download</a>
+    </div>
+</div>
+
+<main class="main-content">
+    <div class="task-card">
+        <form class="task-form" id="taskForm">
+            <div class="form-group">
+                <label class="form-label">Title</label>
+                <input type="text" class="form-input" name="title" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Description</label>
+                <textarea class="form-textarea" name="description" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Status</label>
+                <select class="form-select" name="status" required>
+                    <option value="true">True</option>
+                    <option value="false">False</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Images (up to 3)</label>
+                <div class="image-upload" id="imageUpload">
+                    <div class="image-preview">
+                        <input type="file" accept="image/*">
+                        <span>+</span>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="create-btn">Create Task</button>
+        </form>
+    </div>
+</main>
+
+<script src="/js/create_task.js"></script>
+</body>
+</html>

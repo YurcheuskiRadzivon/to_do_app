@@ -68,7 +68,7 @@ func (tr *taskRepository) GetTasks(userId int) ([]model.TaskH, error) {
 func (tr *taskRepository) GetTask(id int) (*model.TaskH, error) {
 	var TaskH model.TaskH
 	query := `SELECT id, title, description, status, added_time, images, user_id FROM "Task" WHERE id=$1;`
-	err := tr.db.QueryRow(context.Background(), query, id).Scan(&TaskH.ID, &TaskH.Title, &TaskH.Status, &TaskH.AddedTime, &TaskH.Images, &TaskH.UserId)
+	err := tr.db.QueryRow(context.Background(), query, id).Scan(&TaskH.ID, &TaskH.Title, &TaskH.Description, &TaskH.Status, &TaskH.AddedTime, &TaskH.Images, &TaskH.UserId)
 	if err != nil {
 		return nil, err
 	}
@@ -86,8 +86,8 @@ func (tr *taskRepository) InsertTask(TaskH model.TaskH) error {
 	return nil
 }
 func (tr *taskRepository) UpdateTask(TaskH model.TaskH) error {
-	query := `UPDATE "Task" SET title=$1, description=$2, status=$3, added_time=$4, images=$5 WHERE id=$7;`
-	_, err := tr.db.Exec(context.Background(), query, TaskH.Title, TaskH.Description, TaskH.Status, TaskH.AddedTime, TaskH.Images, TaskH.ID)
+	query := `UPDATE "Task" SET title=$1, description=$2, status=$3 WHERE id=$4;`
+	_, err := tr.db.Exec(context.Background(), query, TaskH.Title, TaskH.Description, TaskH.Status, TaskH.ID)
 	if err != nil {
 		return err
 	}

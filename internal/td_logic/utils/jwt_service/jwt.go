@@ -56,7 +56,7 @@ func GetEmailNickname(tokenString string) (string, error) {
 		return "", err
 	}
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		email := claims["name"].(string)
+		email := claims["email"].(string)
 		log.Println(email)
 		return email, nil
 	}

@@ -1,0 +1,67 @@
+<html>
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/tasks_id.css">
+    <title>Task Details</title>
+
+</head>
+<body>
+<header>
+    <div class="logo-section">
+        <img src="/img/logo2.png" alt="Logo">
+        <h1>ToDoApp</h1>
+    </div>
+    <button class="menu-btn">☰</button>
+</header>
+
+<div class="sidebar">
+    <div class="sidebar-buttons">
+        <a href="/user" class="sidebar-btn">Account</a>
+        <a href="/tasks" class="sidebar-btn">Home</a>
+        <a href="/export" class="sidebar-btn">Download</a>
+    </div>
+</div>
+
+<main class="main-content">
+    <div class="task-card">
+        <div class="task-info">
+            <div class="info-item">
+                <div class="info-label">Title</div>
+                <div class="info-value">{{.Title}}</div>
+                <input type="text" class="info-input" value="{{.Title}}">
+            </div>
+            <div class="info-item">
+                <div class="info-label">Description</div>
+                <div class="info-value">{{.Description}}</div>
+                <textarea class="info-input" rows="3">{{.Description}}</textarea>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Status</div>
+                <div class="info-value">
+                    <span class="status-badge status-false">{{.Status}}</span>
+                </div>
+                <select class="info-input">
+                    <option value="false">False</option>
+                    <option value="true">True</option>
+                </select>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Added Time</div>
+                <div class="info-value">{{.AddedTime}}</div>
+            </div>
+            <div class="task-id" data-id="{{.ID}}"> </div>
+        </div>
+        <div class="button-group">
+            <button class="edit-btn">Edit</button>
+            <button class="save-btn">Save</button>
+            <button class="cancel-btn">Cancel</button>
+            <button class="delete-btn">Delete</button>
+        </div>
+    </div>
+</main>
+
+<script src="/js/tasks_id.js"></script>
+</body>
+</html>

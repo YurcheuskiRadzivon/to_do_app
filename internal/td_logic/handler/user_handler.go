@@ -32,32 +32,51 @@ func NewUserHandler(controller controller.UserController, lgr *logger.Logger) Us
 
 }
 func (us *userHandler) GetUser(c *fiber.Ctx) error {
-	return nil
+	var user *model.User
+	tokenStr := c.Cookies("tokenAuth")
+	user, err := us.controller.GetUser(c.Context(), tokenStr)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": fmt.Sprintf("%s", err)})
+	}
+	return c.Render("user", user)
 }
 func (us *userHandler) InsertUser(c *fiber.Ctx) error {
-	var User model.User
-	if err := c.BodyParser(&User); err != nil {
+	var user model.User
+	if err := c.BodyParser(&user); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Cannot parse JSON"})
 	}
-	if err := us.controller.InsertUser(c.Context(), User); err != nil {
+	if err := us.controller.InsertUser(c.Context(), user); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": fmt.Sprintf("%s", err)})
 	}
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"message": "successfully"})
 }
 func (us *userHandler) UpdateUser(c *fiber.Ctx) error {
-	return nil
+	var user model.User
+	if err := c.BodyParser(&user); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Cannot parse JSON"})
+	}
+	tokenStr := c.Cookies("tokenAuth")
+	tokenStrNew, err := us.controller.UpdateUser(c.Context(), user, tokenStr)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Cannot update user"})
+	}
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"token": fmt.Sprintf("%s", tokenStrNew)})
 }
 func (us *userHandler) DeleteUser(c *fiber.Ctx) error {
-	return nil
+	tokenStr := c.Cookies("tokenAuth")
+	if err := us.controller.DeleteUser(c.Context(), tokenStr); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": fmt.Sprintf("%s", err)})
+	}
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"message": "successfully"})
 }
 
 func (us *userHandler) LoginUser(c *fiber.Ctx) error {
-	var User model.User
-	if err := c.BodyParser(&User); err != nil {
+	var user model.User
+	if err := c.BodyParser(&user); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Cannot parse JSON"})
 	}
-	jwtStr, err := us.controller.LoginUser(c.Context(), &User)
+	jwtStr, err := us.controller.LoginUser(c.Context(), &user)
 
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": fmt.Sprintf("%s", err)})

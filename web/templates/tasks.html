@@ -22,8 +22,8 @@
 
 <div class="sidebar">
     <div class="sidebar-buttons">
-        <a href="https://google.com" class="sidebar-btn">Account</a>
-        <a href="https://google.com" class="sidebar-btn">Home</a>
+        <a href="/user" class="sidebar-btn">Account</a>
+        <a href="/tasks" class="sidebar-btn">Home</a>
         <a href="https://google.com" class="sidebar-btn">Download</a>
     </div>
 </div>
@@ -57,7 +57,7 @@
                 <a href="/tasks?sort=status" class="sort-option">Status</a>
             </div>
         </div>
-        <a href="https://google.com" class="create-btn">
+        <a href="/tasks/new" class="create-btn">
             Create
             <svg
                     class="lucide lucide-pencil"
@@ -79,11 +79,13 @@
 
     <div class="tasks-container">
         {{range .}}
-        <a href="https://google.com" class="card">
+        <a href="/tasks/{{.ID}}" class="card">
             <div class="content">
                 <p class="heading">{{.Title}}</p>
                 <p class="para">
-                    {{.Description}}
+                    {{.Description}}<br>
+                    Status: {{.Status}}<br>
+                    Added time: {{.AddedTime}}<br>
                 </p>
             </div>
         </a>

@@ -16,7 +16,7 @@ type TaskController interface {
 	GetTasks(ctx context.Context, tokenString string, sortParam string) ([]model.Task, error)
 	GetTask(ctx context.Context, id int) (*model.Task, error)
 	InsertTask(ctx context.Context, Task model.Task, tokenString string) error
-	UpdateTask(ctx context.Context, Task model.Task, tokenString string) error
+	UpdateTask(ctx context.Context, Task model.Task, tokenString string, id int) error
 	DeleteTask(ctx context.Context, id int) error
 }
 
@@ -59,8 +59,10 @@ func (tc *taskController) GetTasks(ctx context.Context, tokenString string, sort
 			AddedTime:   value.AddedTime,
 			Images:      images,
 		}
+
 		taskList = append(taskList, Task)
 	}
+
 	allowedSorts := map[string]bool{
 		"status": true,
 		"name":   true,
@@ -116,7 +118,7 @@ func (tc *taskController) GetTask(ctx context.Context, id int) (*model.Task, err
 
 func (tc *taskController) InsertTask(ctx context.Context, Task model.Task, tokenString string) error {
 	tc.lgr.DebugLogger.Printf("InsertTask called with task: %+v\n", Task)
-	imagesJSON, err := json.Marshal(Task.Images)
+	imagesJSON, err := json.Marshal([]string{})
 	if err != nil {
 		tc.lgr.ErrorLogger.Printf("Failed to marshal images: %v\n", err)
 		return err
@@ -142,9 +144,10 @@ func (tc *taskController) InsertTask(ctx context.Context, Task model.Task, token
 	return nil
 }
 
-func (tc *taskController) UpdateTask(ctx context.Context, Task model.Task, tokenString string) error {
+func (tc *taskController) UpdateTask(ctx context.Context, Task model.Task, tokenString string, id int) error {
 	tc.lgr.DebugLogger.Printf("UpdateTask called with task: %+v\n", Task)
-	imagesJSON, err := json.Marshal(Task.Images)
+
+	imagesJSON, err := json.Marshal([]string{})
 	if err != nil {
 		tc.lgr.ErrorLogger.Printf("Failed to marshal images: %v\n", err)
 		return err
@@ -155,7 +158,7 @@ func (tc *taskController) UpdateTask(ctx context.Context, Task model.Task, token
 		return err
 	}
 	TaskH := model.TaskH{
-		ID:          Task.ID,
+		ID:          id,
 		Title:       Task.Title,
 		Description: Task.Description,
 		Status:      Task.Status,

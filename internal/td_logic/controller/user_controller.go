@@ -15,10 +15,10 @@ import (
 )
 
 type UserController interface {
-	GetUser(ctx context.Context, nickname, email string) (*model.User, error)
+	GetUser(ctx context.Context, tokenStr string) (*model.User, error)
 	InsertUser(ctx context.Context, User model.User) error
-	UpdateUser(ctx context.Context, id int, UserUp model.User) (string, error)
-	DeleteUser(ctx context.Context, id int) error
+	UpdateUser(ctx context.Context, UserUp model.User, tokenStr string) (string, error)
+	DeleteUser(ctx context.Context, tokenStr string) error
 	GetUserPassword(ctx context.Context, id int) ([]byte, error)
 	LoginUser(ctx context.Context, User *model.User) (string, error)
 }
@@ -35,7 +35,17 @@ func NewUserController(repo repository.UserRepository, lgr *logger.Logger) UserC
 	}
 }
 
-func (uc *userController) GetUser(ctx context.Context, nickname, email string) (*model.User, error) {
+func (uc *userController) GetUser(ctx context.Context, tokenStr string) (*model.User, error) {
+	nickname, err := jwt_service.GetUserNickname(tokenStr)
+	if err != nil {
+		uc.lgr.ErrorLogger.Printf("Failed to retrieve nickname from token: %s\n", err)
+		return nil, err
+	}
+	email, err := jwt_service.GetEmailNickname(tokenStr)
+	if err != nil {
+		uc.lgr.ErrorLogger.Printf("Failed to retrieve email from token: %s\n", err)
+		return nil, err
+	}
 	uc.lgr.DebugLogger.Printf("GetUser called with nickname: %s, email: %s\n", nickname, email)
 	User, err := uc.repo.GetUser(nickname, email)
 	if err != nil {
@@ -65,28 +75,38 @@ func (uc *userController) InsertUser(ctx context.Context, User model.User) error
 	return nil
 }
 
-func (uc *userController) UpdateUser(ctx context.Context, id int, UserUp model.User) (string, error) {
+func (uc *userController) UpdateUser(ctx context.Context, UserUp model.User, tokenStr string) (string, error) {
+	id, err := jwt_service.GetUserId(tokenStr)
+	if err != nil {
+		uc.lgr.ErrorLogger.Printf("Failed to retrieve userId from token: %s\n", err)
+		return tokenStr, err
+	}
 	uc.lgr.DebugLogger.Printf("UpdateUser called with id: %d, user: %+v\n", id, UserUp)
 	if err := uc.repo.UpdateUser(id, UserUp); err != nil {
 		uc.lgr.ErrorLogger.Printf("Failed to update user with id: %d: %v\n", id, err)
-		return "", err
+		return tokenStr, err
 	}
 	payload := jwt.MapClaims{
 		"email":  UserUp.Email,
 		"name":   UserUp.Nickname,
-		"sub_id": UserUp.ID,
+		"sub_id": id,
 		"exp":    time.Now().Add(time.Hour * 72).Unix(),
 	}
 	t, err := jwt_service.CreateToken(payload)
 	if err != nil {
 		uc.lgr.ErrorLogger.Printf("Failed to create token for user with id: %d: %v\n", id, err)
-		return "", err
+		return tokenStr, err
 	}
 	uc.lgr.InfoLogger.Printf("Updated user with id: %d\n", id)
 	return t, nil
 }
 
-func (uc *userController) DeleteUser(ctx context.Context, id int) error {
+func (uc *userController) DeleteUser(ctx context.Context, tokenStr string) error {
+	id, err := jwt_service.GetUserId(tokenStr)
+	if err != nil {
+		uc.lgr.ErrorLogger.Printf("Failed to retrieve userId from token: %s\n", err)
+		return err
+	}
 	uc.lgr.DebugLogger.Printf("DeleteUser called with id: %d\n", id)
 	if err := uc.repo.DeleteUser(id); err != nil {
 		uc.lgr.ErrorLogger.Printf("Failed to delete user with id: %d: %v\n", id, err)

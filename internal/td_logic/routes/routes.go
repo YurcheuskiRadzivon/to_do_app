@@ -28,6 +28,17 @@ func NewFiberRouter(userHandler handler.UserHandler, taskHandler handler.TaskHan
 	app.Post("/login", userHandler.LoginUser)
 	app.Post("/register", userHandler.InsertUser)
 	app.Get("/tasks", middleware.AuthMiddleware, taskHandler.GetTasks)
+	app.Get("/tasks/new", middleware.AuthMiddleware, func(c *fiber.Ctx) error {
+		return c.Render("create_task", nil)
+	})
+	app.Post("/tasks", middleware.AuthMiddleware, taskHandler.InsertTask)
+	app.Get("/tasks/:id", middleware.AuthMiddleware, taskHandler.GetTask)
+	app.Put("/tasks/:id", middleware.AuthMiddleware, taskHandler.UpdateTask)
+	app.Delete("/tasks/:id", middleware.AuthMiddleware, taskHandler.DeleteTask)
+	app.Get("/user", middleware.AuthMiddleware, userHandler.GetUser)
+	app.Put("/user", middleware.AuthMiddleware, userHandler.UpdateUser)
+	app.Delete("/user", middleware.AuthMiddleware, userHandler.DeleteUser)
+
 	filepath := filepath.Join("web", "static")
 	app.Static("/", filepath)
 	return app

@@ -1,0 +1,59 @@
+<html>
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/user.css">
+    <title>Account Page</title>
+
+</head>
+<body>
+<header>
+    <div class="logo-section">
+        <img src="/img/logo2.png" alt="Logo">
+        <h1>ToDoApp</h1>
+    </div>
+    <button class="menu-btn">☰</button>
+</header>
+
+<div class="sidebar">
+    <div class="sidebar-buttons">
+        <a href="/user" class="sidebar-btn" style="text-decoration: none;">Account</a>
+        <a href="/tasks" class="sidebar-btn" style="text-decoration: none;">Home</a>
+        <a href="/export" class="sidebar-btn" style="text-decoration: none;">Download</a>
+    </div>
+</div>
+
+<main class="main-content">
+    <div class="account-card">
+        <div class="account-info">
+            <div class="info-item">
+                <div class="info-label">Name</div>
+                <div class="info-value">{{ .Nickname }}</div>
+                <input type="text" class="info-input" value="{{ .Nickname }}">
+            </div>
+            <div class="info-item">
+                <div class="info-label">Gmail</div>
+                <div class="info-value">{{ .Email }}</div>
+                <input type="email" class="info-input" value="{{ .Email }}">
+            </div>
+            <div class="info-item">
+                <div class="info-label">Password</div>
+                <div class="info-value">•••••••••</div>
+                <input type="password" class="info-input" value="************">
+                <span class="password-toggle">👁️</span>
+            </div>
+        </div>
+        <div class="button-group">
+            <button class="edit-btn">Edit</button>
+            <button class="save-btn">Save</button>
+            <button class="cancel-btn">Cancel</button>
+        </div>
+        <button class="logout-btn">Logout</button>
+        <button class="delete-btn">Delete Account</button>
+    </div>
+</main>
+
+<script src="/js/user.js"></script>
+</body>
+</html>

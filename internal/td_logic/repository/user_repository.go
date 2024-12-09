@@ -52,15 +52,15 @@ func (ur *userRepository) InsertUser(User model.UserHash) error {
 	return nil
 }
 func (ur *userRepository) UpdateUser(id int, User model.User) error {
-	query := `UPDATE "user" SET nickname=$1, email=$2 WHERE id=$3`
-	_, err := ur.db.Exec(context.Background(), query, User.Nickname, User.Email, User.ID)
+	query := `UPDATE "User" SET nickname=$1, email=$2 WHERE id=$3`
+	_, err := ur.db.Exec(context.Background(), query, User.Nickname, User.Email, id)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 func (ur *userRepository) DeleteUser(id int) error {
-	query := `DELETE FROM "user" WHERE id=$1`
+	query := `DELETE FROM "User" WHERE id=$1`
 	_, err := ur.db.Exec(context.Background(), query, id)
 	if err != nil {
 		return err
@@ -76,4 +76,12 @@ func (ur *userRepository) GetUserPassword(id int) ([]byte, error) {
 	}
 	return hashedPassword, nil
 
+}
+func (ur *userRepository) UpdateUserPassword(id int, pass []byte) error {
+	query := `UPDATE "User" SET password=$1 WHERE id=$2`
+	_, err := ur.db.Exec(context.Background(), query, pass, id)
+	if err != nil {
+		return err
+	}
+	return nil
 }
