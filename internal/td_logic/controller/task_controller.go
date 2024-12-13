@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -8,16 +9,18 @@ import (
 	"github.com/YurcheuskiRadzivon/to_do_app/internal/td_logic/model"
 	"github.com/YurcheuskiRadzivon/to_do_app/internal/td_logic/repository"
 	"github.com/YurcheuskiRadzivon/to_do_app/internal/td_logic/utils/jwt_service"
+	"github.com/jung-kurt/gofpdf"
 	"sort"
 	"strings"
 )
 
 type TaskController interface {
 	GetTasks(ctx context.Context, tokenString string, sortParam string) ([]model.Task, error)
-	GetTask(ctx context.Context, id int) (*model.Task, error)
+	GetTask(ctx context.Context, id int, tokenString string) (*model.Task, error)
 	InsertTask(ctx context.Context, Task model.Task, tokenString string) error
 	UpdateTask(ctx context.Context, Task model.Task, tokenString string, id int) error
 	DeleteTask(ctx context.Context, id int) error
+	ExportTasks(ctx context.Context, tokenString string) ([]byte, error)
 }
 
 type taskController struct {
@@ -91,9 +94,14 @@ func (tc *taskController) GetTasks(ctx context.Context, tokenString string, sort
 	return taskList, nil
 }
 
-func (tc *taskController) GetTask(ctx context.Context, id int) (*model.Task, error) {
+func (tc *taskController) GetTask(ctx context.Context, id int, tokenString string) (*model.Task, error) {
+	userId, err := jwt_service.GetUserId(tokenString)
+	if err != nil {
+		tc.lgr.ErrorLogger.Printf("Failed to get user ID from token: %v\n", err)
+		return nil, err
+	}
 	tc.lgr.DebugLogger.Printf("GetTask called with id: %d\n", id)
-	TaskH, err := tc.repo.GetTask(id)
+	TaskH, err := tc.repo.GetTask(id, userId)
 	if err != nil {
 		tc.lgr.ErrorLogger.Printf("Failed to retrieve task with ID %d: %v\n", id, err)
 		return nil, err
@@ -181,4 +189,40 @@ func (tc *taskController) DeleteTask(ctx context.Context, id int) error {
 	}
 	tc.lgr.InfoLogger.Printf("Deleted task with ID %d\n", id)
 	return nil
+}
+func (tc *taskController) ExportTasks(ctx context.Context, tokenString string) ([]byte, error) {
+	tc.lgr.DebugLogger.Println("ExportTasks called")
+
+	// Получаем список задач
+	tasks, err := tc.GetTasks(ctx, tokenString, "date")
+	if err != nil {
+		tc.lgr.ErrorLogger.Printf("Failed to retrieve tasks: %v\n", err)
+		return nil, err
+	}
+
+	// Создаем PDF
+	pdf := gofpdf.New("P", "mm", "A4", "")
+	pdf.AddPage()
+	pdf.SetFont("Arial", "B", 16)
+	pdf.Cell(40, 10, "Exported Tasks")
+	pdf.Ln(12)
+
+	pdf.SetFont("Arial", "", 12)
+	for _, task := range tasks {
+		pdf.Cell(40, 10, fmt.Sprintf("Title: %s", task.Title))
+		pdf.Ln(6)
+		pdf.Cell(40, 10, fmt.Sprintf("Description: %s", task.Description))
+		pdf.Ln(6)
+		pdf.Cell(40, 10, fmt.Sprintf("Status: %t", task.Status))
+		pdf.Ln(10)
+	}
+
+	var pdfBytes bytes.Buffer
+	err = pdf.Output(&pdfBytes)
+	if err != nil {
+		tc.lgr.ErrorLogger.Printf("Failed to generate PDF: %v\n", err)
+		return nil, err
+	}
+
+	return pdfBytes.Bytes(), nil
 }

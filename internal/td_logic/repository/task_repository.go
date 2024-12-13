@@ -5,12 +5,13 @@ import (
 	"fmt"
 	"github.com/YurcheuskiRadzivon/online_music_library/pkg/logger"
 	"github.com/YurcheuskiRadzivon/to_do_app/internal/td_logic/model"
+	dberrors "github.com/YurcheuskiRadzivon/to_do_app/internal/td_logic/utils/db_errors"
 	"github.com/jackc/pgx/v4/pgxpool"
 )
 
 type TaskRepository interface {
 	GetTasks(userId int) ([]model.TaskH, error)
-	GetTask(id int) (*model.TaskH, error)
+	GetTask(id int, userId int) (*model.TaskH, error)
 	InsertTask(Task model.TaskH) error
 	UpdateTask(TaskH model.TaskH) error
 	DeleteTask(id int) error
@@ -42,7 +43,7 @@ func (tr *taskRepository) GetTasks(userId int) ([]model.TaskH, error) {
 	rows, err := tr.db.Query(context.Background(), query, userId)
 	if err != nil {
 		tr.lgr.ErrorLogger.Println("Error querying tasks:", err)
-		return nil, err
+		return nil, dberrors.UserError(err)
 	}
 	defer rows.Close()
 
@@ -65,12 +66,12 @@ func (tr *taskRepository) GetTasks(userId int) ([]model.TaskH, error) {
 	return tasks, nil
 }
 
-func (tr *taskRepository) GetTask(id int) (*model.TaskH, error) {
+func (tr *taskRepository) GetTask(id int, userId int) (*model.TaskH, error) {
 	var TaskH model.TaskH
-	query := `SELECT id, title, description, status, added_time, images, user_id FROM "Task" WHERE id=$1;`
-	err := tr.db.QueryRow(context.Background(), query, id).Scan(&TaskH.ID, &TaskH.Title, &TaskH.Description, &TaskH.Status, &TaskH.AddedTime, &TaskH.Images, &TaskH.UserId)
+	query := `SELECT id, title, description, status, added_time, images, user_id FROM "Task" WHERE id=$1 AND user_id =$2 ;`
+	err := tr.db.QueryRow(context.Background(), query, id, userId).Scan(&TaskH.ID, &TaskH.Title, &TaskH.Description, &TaskH.Status, &TaskH.AddedTime, &TaskH.Images, &TaskH.UserId)
 	if err != nil {
-		return nil, err
+		return nil, dberrors.UserError(err)
 	}
 	tr.lgr.InfoLogger.Printf("Retrieved task with ID %d.\n", id)
 	return &TaskH, nil
@@ -80,7 +81,7 @@ func (tr *taskRepository) InsertTask(TaskH model.TaskH) error {
 	query := `INSERT INTO "Task" (title, description, status, added_time, images, user_id) VALUES ($1, $2, $3, NOW(), $4, $5);`
 	_, err := tr.db.Exec(context.Background(), query, TaskH.Title, TaskH.Description, TaskH.Status, TaskH.Images, TaskH.UserId)
 	if err != nil {
-		return err
+		return dberrors.UserError(err)
 	}
 
 	return nil
@@ -89,7 +90,7 @@ func (tr *taskRepository) UpdateTask(TaskH model.TaskH) error {
 	query := `UPDATE "Task" SET title=$1, description=$2, status=$3 WHERE id=$4;`
 	_, err := tr.db.Exec(context.Background(), query, TaskH.Title, TaskH.Description, TaskH.Status, TaskH.ID)
 	if err != nil {
-		return err
+		return dberrors.UserError(err)
 	}
 	return nil
 }
@@ -99,7 +100,7 @@ func (tr *taskRepository) DeleteTask(id int) error {
 	_, err := tr.db.Exec(context.Background(), query, id)
 	if err != nil {
 
-		return err
+		return dberrors.UserError(err)
 	}
 	return nil
 }

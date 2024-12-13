@@ -7,20 +7,16 @@ import (
 )
 
 func AuthMiddleware(c *fiber.Ctx) error {
-
 	cookie := c.Cookies("tokenAuth")
 	if cookie == "" {
 		return c.Redirect("/login")
 	}
-
 	token, err := jwt.Parse(cookie, func(token *jwt.Token) (interface{}, error) {
 		return jwt_service.GetJwtSecretKey(), nil
 	})
-
 	if err != nil || !token.Valid {
 		return c.Redirect("/login")
 	}
-
 	return c.Next()
 }
 func RedirectHandler(c *fiber.Ctx) error {

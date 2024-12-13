@@ -141,7 +141,7 @@ func (uc *userController) LoginUser(ctx context.Context, User *model.User) (stri
 	}
 	if err := bcrypt.CompareHashAndPassword(pass, []byte(User.Password)); err != nil {
 		uc.lgr.ErrorLogger.Printf("Password mismatch for user with id: %d: %v\n", U.ID, err)
-		return "", fmt.Errorf("password mismatch: %v", err)
+		return "", fmt.Errorf("Incorrect password")
 	}
 	payload := jwt.MapClaims{
 		"email":  User.Email,

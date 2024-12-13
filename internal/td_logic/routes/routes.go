@@ -38,6 +38,7 @@ func NewFiberRouter(userHandler handler.UserHandler, taskHandler handler.TaskHan
 	app.Get("/user", middleware.AuthMiddleware, userHandler.GetUser)
 	app.Put("/user", middleware.AuthMiddleware, userHandler.UpdateUser)
 	app.Delete("/user", middleware.AuthMiddleware, userHandler.DeleteUser)
+	app.Get("/export", middleware.AuthMiddleware, taskHandler.ExportTasks)
 
 	filepath := filepath.Join("web", "static")
 	app.Static("/", filepath)

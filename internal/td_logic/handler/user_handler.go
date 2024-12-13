@@ -6,6 +6,7 @@ import (
 	"github.com/YurcheuskiRadzivon/online_music_library/pkg/logger"
 	"github.com/YurcheuskiRadzivon/to_do_app/internal/td_logic/controller"
 	"github.com/YurcheuskiRadzivon/to_do_app/internal/td_logic/model"
+	"regexp"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -15,7 +16,6 @@ type UserHandler interface {
 	InsertUser(c *fiber.Ctx) error
 	UpdateUser(c *fiber.Ctx) error
 	DeleteUser(c *fiber.Ctx) error
-
 	LoginUser(c *fiber.Ctx) error
 }
 type userHandler struct {
@@ -56,6 +56,9 @@ func (us *userHandler) UpdateUser(c *fiber.Ctx) error {
 	if err := c.BodyParser(&user); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Cannot parse JSON"})
 	}
+	if user.Nickname == "" || user.Email == "" || IsValidEmail(user.Email) == false {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "error filling in fields"})
+	}
 	tokenStr := c.Cookies("tokenAuth")
 	tokenStrNew, err := us.controller.UpdateUser(c.Context(), user, tokenStr)
 	if err != nil {
@@ -84,4 +87,11 @@ func (us *userHandler) LoginUser(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"token": fmt.Sprintf("%s", jwtStr)})
 
+}
+
+func IsValidEmail(email string) bool {
+
+	emailRegex := `^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`
+	re := regexp.MustCompile(emailRegex)
+	return re.MatchString(email)
 }

@@ -16,6 +16,7 @@ type TaskHandler interface {
 	InsertTask(c *fiber.Ctx) error
 	UpdateTask(c *fiber.Ctx) error
 	DeleteTask(c *fiber.Ctx) error
+	ExportTasks(c *fiber.Ctx) error
 }
 type taskHandler struct {
 	ctx        context.Context
@@ -46,14 +47,14 @@ func (th *taskHandler) GetTasks(c *fiber.Ctx) error {
 	return c.Render("tasks", tasks)
 }
 func (th *taskHandler) GetTask(c *fiber.Ctx) error {
-
+	cookie := c.Cookies("tokenAuth")
 	id, err := strconv.Atoi(c.Params("id"))
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": err.Error(),
 		})
 	}
-	task, err := th.controller.GetTask(c.Context(), id)
+	task, err := th.controller.GetTask(c.Context(), id, cookie)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": err.Error(),
@@ -95,6 +96,9 @@ func (th *taskHandler) UpdateTask(c *fiber.Ctx) error {
 	if err := c.BodyParser(&task); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Cannot parse JSON"})
 	}
+	if task.Title == "" || task.Description == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "empty fields"})
+	}
 
 	tokenStr := c.Cookies("tokenAuth")
 	err = th.controller.UpdateTask(c.Context(), task, tokenStr, id)
@@ -121,4 +125,17 @@ func (th *taskHandler) DeleteTask(c *fiber.Ctx) error {
 		})
 	}
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"message": "successfully"})
+}
+func (th *taskHandler) ExportTasks(c *fiber.Ctx) error {
+	cookie := c.Cookies("tokenAuth")
+
+	pdfBytes, err := th.controller.ExportTasks(c.Context(), cookie)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	c.Set("Content-Type", "application/pdf")
+	c.Set("Content-Disposition", "attachment; filename=tasks.pdf")
+	return c.Send(pdfBytes)
 }
